@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { useTokenStore } from '@/store/modules/auth'; // 根据实际路径调整
+import { useTokenStore } from '@/store/modules/auth'; // 根据实际路径调整
 import { getActivePinia } from 'pinia';
 
 export function request(config) {
@@ -7,7 +7,7 @@ export function request(config) {
      if (!getActivePinia()) {
         throw new Error('Pinia is not active');
     }
-    // const tokenStore = useTokenStore();
+    const tokenStore = useTokenStore();
 
     // 创建 axios 实例
     const instance = axios.create({
@@ -18,8 +18,8 @@ export function request(config) {
     // 配置请求拦截器
     instance.interceptors.request.use(
         (config) => {
-            // const token = tokenStore.getToken();
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdW4iLCJleHAiOjE3NTY2MzExMzZ9.POtRRNnYgpOGvktJsZOC_lz3DKHWW8l3jXGhKv5N8uQ";
+            const token = tokenStore.getToken();
+            // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdW4iLCJleHAiOjE3NTY2MzExMzZ9.POtRRNnYgpOGvktJsZOC_lz3DKHWW8l3jXGhKv5N8uQ";
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
             }

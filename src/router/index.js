@@ -8,6 +8,7 @@ import Personal from '@/views/Personal.vue'
 import PostOne from '@/views/community/PostOne.vue'
 import ShowPost from '@/views/community/ShowPost.vue'
 import ShowDialog from '@/views/community/ShowDialog.vue'
+import UserContoller from '@/views/UserContoller.vue'
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -52,6 +53,11 @@ const router = createRouter({
           name: 'PostOne',
           component: PostOne,
           mata:{isDialog:true} //标记为弹窗路由
+        },
+        {
+          path: 'usercontroller',
+          name: 'UserController',
+          component: UserContoller
         }
       ]
     },

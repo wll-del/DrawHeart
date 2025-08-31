@@ -52,70 +52,186 @@
       
         <!-- 右侧元素库区域（对应.page的.lovi-info） -->
         <div class="elements-info">
+
           <!-- 图标 + 标题组合（对应.lovi-icon-title） -->
           <div class="elements-icon-title">
             <img :src="require('@/assets/publish_icon.png')" class="elements-icon" alt="元素库图标">
             <span class="elements-title">元素库</span>
           </div>
           
+          <div class="elements-grid">
+            <div 
+              v-for="(element, index) in element_type" 
+              :key="'library-'+index"
+              class="element-type-item"
+              @click="selectType(index)"
+            >
+              {{ element.name }}
+            </div>
+
           <!-- 元素库网格布局（核心内容区） -->
           <div class="elements-grid">
             <div 
-              v-for="(element, index) in elementLibrary" 
+              v-for="(element, index) in elements_content" 
               :key="'library-'+index"
               class="element-item"
               draggable="true"
               @dragstart="onDragStart($event, element)"
             >
-              {{ element.name }}
+              <img src=element.img alt="图片描述" />
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
-import { reactive, ref, toRaw } from 'vue'
+import { reactive, toRaw } from 'vue'
 import { nanoid } from 'nanoid'
 
 export default {
   name: 'SandboxApp',
-  setup() {
-    // 元素库 - 预定义的可用元素
-    const elementLibrary = reactive([
-      { type: 'rectangle', name: '矩形', width: 100, height: 60, color: '#3eaf7c' },
-      { type: 'circle', name: '圆形', width: 80, height: 80, color: '#e96900' },
-      { type: 'text', name: '文本', width: 120, height: 40, color: '#1890ff' },
-      { type: 'image', name: '图片', width: 100, height: 100, color: '#722ed1' },
-      { type: 'decision', name: '决策', width: 100, height: 60, color: '#fa541c' }
-    ])
-    
-    // 白板上的元素
-    const elements = reactive([])
-    
-    // 选中元素
-    const selectedElement = ref(null)
-    
-    // 操作历史
-    const history = reactive({
-      past: [],
-      future: [],
-      current: []
-    })
-    
-    return {
-      elementLibrary,
-      elements,
-      selectedElement,
-      history
+  data(){
+    return{
+      element_type : [
+        {name: '地形', type: 'rectangle', color: '#3eaf7c'},
+        {name: '植物', type: 'rectangle', color: '#3eaf7c'},
+        {name: '自然景观', type: 'rectangle', color: '#3eaf7c'},
+        {name: '人物', type: 'rectangle', color: '#3eaf7c'},
+        {name: '交通', type: 'rectangle', color: '#3eaf7c'},
+        {name: '社会科学', type: 'rectangle', color: '#3eaf7c'},
+        {name: '宗教', type: 'rectangle', color: '#3eaf7c'},
+        {name: '动物', type: 'rectangle', color: '#3eaf7c'},
+        {name: '建筑物', type: 'rectangle', color: '#3eaf7c'},
+      ],
+      elementLibrary : reactive([
+        { type: 'rectangle', name: '矩形', width: 100, height: 60, color: '#3eaf7c' },
+        { type: 'circle', name: '圆形', width: 80, height: 80, color: '#e96900' },
+        { type: 'text', name: '文本', width: 120, height: 40, color: '#1890ff' },
+        { type: 'image', name: '图片', width: 100, height: 100, color: '#722ed1' },
+        { type: 'decision', name: '决策', width: 100, height: 60, color: '#fa541c' }
+      ]),
+      elements : reactive([]),
+      selectedElement : "",
+      history : reactive({
+        past: [],
+        future: [],
+        current: []
+      }),
+      select_type: {},
+      elements_content: [],
+      type_path : {
+        "地形": [
+          "@/assets/terrain/1.png",
+          "@/assets/terrain/2.png",
+          "@/assets/terrain/3.png",
+          "@/assets/terrain/4.png",
+          "@/assets/terrain/5.png",
+          "@/assets/terrain/6.png"
+        ],
+        "植物": [
+          "@/assets/plant/1.png",
+          "@/assets/plant/2.png",
+          "@/assets/plant/3.png",
+          "@/assets/plant/4.png",
+          "@/assets/plant/5.png",
+          "@/assets/plant/6.png",
+          "@/assets/plant/7.png",
+          "@/assets/plant/8.png",
+          "@/assets/plant/9.png",
+          "@/assets/plant/10.png",
+          "@/assets/plant/11.png"
+        ],
+        "自然景观": [
+          "@/assets/natural_landscape/1.png",
+          "@/assets/natural_landscape/2.png",
+          "@/assets/natural_landscape/3.png",
+          "@/assets/natural_landscape/4.png",
+          "@/assets/natural_landscape/5.png",
+          "@/assets/natural_landscape/6.png",
+          "@/assets/natural_landscape/7.png",
+          "@/assets/natural_landscape/8.png",
+          "@/assets/natural_landscape/9.png",
+          "@/assets/natural_landscape/10.png",
+          "@/assets/natural_landscape/11.png"
+        ],
+        "人物":[
+          "@/assets/people/1.png",
+          "@/assets/people/2.png",
+          "@/assets/people/3.png",
+          "@/assets/people/4.png",
+          "@/assets/people/5.png",
+          "@/assets/people/6.png",
+          "@/assets/people/7.png",
+          "@/assets/people/8.png",
+          "@/assets/people/9.png",
+          "@/assets/people/10.png",
+          "@/assets/people/11.png",
+          "@/assets/people/12.png"
+        ],
+        "交通":[
+          "@/assets/transportation/1.png",
+          "@/assets/transportation/2.png",
+          "@/assets/transportation/3.png",
+          "@/assets/transportation/4.png",
+          "@/assets/transportation/5.png",
+          "@/assets/transportation/6.png",
+          "@/assets/transportation/7.png",
+          "@/assets/transportation/8.png",
+          "@/assets/transportation/9.png",
+          "@/assets/transportation/10.png",
+          "@/assets/transportation/11.png",
+          "@/assets/transportation/12.png",
+          "@/assets/transportation/13.png",
+          "@/assets/transportation/14.png",
+          "@/assets/transportation/15.png",
+          "@/assets/transportation/16.png"
+        ],
+        "动物":[
+          "@/assets/animal/1.png",
+          "@/assets/animal/2.png",
+          "@/assets/animal/3.png",
+          "@/assets/animal/4.png",
+          "@/assets/animal/5.png",
+          "@/assets/animal/6.png",
+          "@/assets/animal/7.png"
+        ],
+        "建筑物":[
+          "@/assets/building/1.png",
+          "@/assets/building/2.png",
+          "@/assets/building/3.png",
+          "@/assets/building/4.png",
+          "@/assets/building/5.png",
+          "@/assets/building/6.png",
+          "@/assets/building/6.png",
+          "@/assets/building/7.png",
+          "@/assets/building/8.png",
+          "@/assets/building/9.png",
+          "@/assets/building/10.png"
+        ]}
     }
   },
   mounted() {
     this.saveHistory()
   },
   methods: {
+    selectType(index){
+      this.select_type = this.element_type[index].name;
+      const path_list = this.type_path[this.select_type]
+      console.log(this.select_type)
+      this.elements_content = []
+      for(let i=0;i<=path_list.length;i+=1)
+      {
+        console.log(path_list[i])
+        this.elements_content.push(
+          {"img" :path_list[i]}  
+        )
+      }
+    },
+    
     // 拖拽开始处理
     onDragStart(event, element) {
       event.dataTransfer.setData('elementType', element.type)
@@ -308,6 +424,7 @@ export default {
 </script>
 
 <style scoped>
+
 /* 基础布局 - 完全模仿.page */
 .sandbox-app {
   width: 95%;
@@ -450,13 +567,17 @@ export default {
   color: #333;
 }
 
-/* 元素库网格 - 模仿.lovi-actions的网格布局 */
 .elements-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2列网格，与.lovi-actions一致 */
-  gap: 12px; /* 间距与.lovi-actions一致 */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:1vw;
   overflow-y: auto; /* 元素过多时垂直滚动 */
+}
+.element-type-item{
+  weight: 10vw;
+  height: 2vh;
+  border: gray;
 }
 
 /* 元素项 - 模仿.action-btn */
