@@ -55,7 +55,7 @@
 
           <!-- 图标 + 标题组合（对应.lovi-icon-title） -->
           <div class="elements-icon-title">
-            <img :src="require('@/assets/publish_icon.png')" class="elements-icon" alt="元素库图标">
+            <img :src="require('@/assets/paint_icon.png')" class="elements-icon" alt="元素库图标">
             <span class="elements-title">元素库</span>
           </div>
           
@@ -91,6 +91,7 @@
 <script>
 import { reactive, toRaw } from 'vue'
 import { nanoid } from 'nanoid'
+// import SandBoxRes from './sandbox/SandBoxRes.vue'
 
 export default {
   name: 'SandboxApp',
@@ -360,7 +361,8 @@ export default {
     analyzeSandbox() {
       // 这里可以实现沙盘分析逻辑
       console.log('沙盘分析:', this.elements)
-      alert(`沙盘当前有 ${this.elements.length} 个元素`)
+      //alert(`沙盘当前有 ${this.elements.length} 个元素`)
+      // this.$router.push('/sandboxres')
     },
     
     // 导出XML
@@ -419,6 +421,7 @@ export default {
         alert('导出PNG时出错，请查看控制台获取详细信息')
       }
     }
+
   }
 }
 </script>
@@ -471,7 +474,7 @@ export default {
   display: flex;
   align-items: start;
   gap: 4px;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 20px;
 }
@@ -481,6 +484,7 @@ export default {
   width: 18px;
   height: 18px;
   object-fit: cover;
+  padding-top: 3px;
 }
 
 /* 沙盘标题 - 模仿.lovi-title */

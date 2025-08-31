@@ -1,4 +1,5 @@
 <template>
+    <div class="back">
     <div class="page">
         <div class="subBlock">
             <p class="text">欢迎来到画心岛小组</p>
@@ -23,6 +24,8 @@
             </div>
         </div>
 
+    </div>
+    <div @click="handlecancel">x</div>
     </div>
 </template>
   
@@ -55,11 +58,20 @@
                 }
             ]
         }
+    },
+    methods:{
+        handlecancel(){
+            this.$emit("cancel");
+        }
     }
   };
   </script>
   
   <style scoped>
+    .back{
+        display:flex;
+        flex-direction:row;
+    }
     .page {
         width: 100%;
         height: 100%;

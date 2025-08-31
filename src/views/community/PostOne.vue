@@ -127,6 +127,14 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    border-radius: 8px;
+    font-family: 'PingFang SC';
+    background: 
+    linear-gradient(white, white) padding-box,
+    linear-gradient(to right, #00B2FF 0%, #4D6EF2 50%, #BF9FFF 100%) border-box;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    padding: 16px
   }
   
   .title-section {
@@ -187,7 +195,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 15px 0;
+    padding: 8px 0;
     border-top: 1px solid rgba(232,235,242,1);
   }
   
