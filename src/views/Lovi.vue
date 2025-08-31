@@ -118,6 +118,7 @@
 </template>
   
 <script>
+import { chat } from '@/api/chat'
 export default {
   name: "PageLovi",
 
@@ -167,12 +168,14 @@ export default {
 
       try {
         // 2. 发送消息到后端
-        const response = await this.$http.post('/api/messages/send', {
-          content: messageContent,
-          timestamp: new Date().toISOString()
-        });
+		const params = new URLSearchParams({
+            chat_content: messageContent,
+            chat_type: "text"
+        }).toString();
 
-        if (response.data.success) {
+		const response =await chat(params)
+
+        if (response.code) {
           console.log('消息发送成功');
           // 清空输入框
           this.message = '';
@@ -182,14 +185,19 @@ export default {
           // 重置快速回复激活状态
           this.activeText = '';
 
+          this.messages.push({
+            content: response.data,
+            isUser: false,
+            timestamp: new Date().toISOString()
+        });
           // 3. 模拟后端返回Lovi回复（实际项目中应使用response.data中的回复）
-          setTimeout(() => {
-            this.messages.push({
-              content: this.getLoviResponse(messageContent),
-              isUser: false,
-              timestamp: new Date().toISOString()
-            });
-          }, 1000);
+        //   setTimeout(() => {
+        //     this.messages.push({
+        //       content: this.getLoviResponse(messageContent),
+        //       isUser: false,
+        //       timestamp: new Date().toISOString()
+        //     });
+        //   }, 1000);
         } else {
           console.error('消息发送失败:', response.data.message);
           // 发送失败时提示用户

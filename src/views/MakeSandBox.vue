@@ -1,826 +1,387 @@
 <template>
-  <div class="page">
-    <div class="wrap">
-      <div class="container">
-        <div class="content">
-          <div class="main">
-            <div></div>
-            <div class="section1">
-              <div class="subSection">
-                <div class="block">
-                  <p class="text">拖拽元素或者使用画笔在这里开始创作</p>
-                </div>
-              </div>
-            </div>
-            <div class="section2"></div>
-          </div>
-          <div class="main1">
-            <div class="subSection2"><p class="text6">操作面板</p></div>
-            <div class="section3">
-              <div class="subSection1">
-                <div class="block1"><p class="text1">上一步</p></div>
-                <div class="block2"><p class="text2">下一步</p></div>
-                <div class="block3"><p class="text3">删除元素</p></div>
-                <div class="block4"><p class="text4">保存作品</p></div>
-                <div class="block5"><p class="text5">分析沙盘</p></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="content1">
-          <div class="main2">
-            <div class="subSection3">
-              <div class="tool-container">
-                <img
-                  :src="require('@/assets/Image5.png')"
-                  class="image4"
-                  alt="Image Asset 5"
-                />
-                <span class="text19">绘画工具</span>
-              </div>
-              <p class="text16">元素库</p>
-              <div class="block6">
-                <div class="subBlock">
-                  <div class="div">
-                    <div class="div1">
-                      <div class="div2"></div>
-                      <p class="text7">植物</p>
-                    </div>
-                    <div class="div3">
-                      <div class="div4"><p class="text8">自然景物</p></div>
-                    </div>
-                    <div class="div5">
-                      <div class="div6"><p class="text9">人物</p></div>
-                    </div>
-                    <div class="div7">
-                      <div class="div8"><p class="text10">交通</p></div>
-                    </div>
-                    <div class="div9">
-                      <div class="div10"><p class="text11">军事</p></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="subBlock1">
-                  <div class="div11">
-                    <div class="div12">
-                      <div class="div13"><p class="text12">社会科学</p></div>
-                    </div>
-                    <div class="div14">
-                      <div class="div15"><p class="text13">宗教</p></div>
-                    </div>
-                    <div class="div16">
-                      <div class="div17"><p class="text14">动物</p></div>
-                    </div>
-                    <div class="div18">
-                      <div class="div19"><p class="text15">建筑物</p></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="block7">
-                <div class="subBlock2">
-                  <img
-                    :src="require('@/assets/tree1.png')"
-                    class="image"
-                    alt="Image Asset 1"
-                  /><img
-                    :src="require('@/assets/tree1.png')"
-                    class="image1"
-                    alt="Image Asset 2"
-                  /><img
-                    :src="require('@/assets/tree1.png')"
-                    class="image2"
-                    alt="Image Asset 3"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container1">
-        <div class="canvas-container">
-          <img
-            :src="require('@/assets/Image4.png')"
-            class="image3"
-            alt="Image Asset 4"
-          />
-          <span class="text18">创作画布</span>
-        </div>
-      </div>
+ <div class="sandbox-app">
+   <!-- 顶部操作栏 -->
+   <div class="control-bar">
+  <button @click="saveProject">保存作品</button>
+  <button @click="analyzeSandbox">分析沙盘</button>
+  <button @click="undo">上一步</button>
+  <button @click="redo">下一步</button>
+  <button @click="deleteSelected">删除元素</button>
+  <button @click="exportXML">导出XML</button>
+  <button @click="exportPNG">导出PNG</button>
+   </div>
+   
+   <div class="main-content">
+  <!-- 左侧元素面板 -->
+  <div class="elements-panel">
+    <h3>元素库</h3>
+    <div 
+   v-for="(element, index) in elementLibrary" 
+   :key="'library-'+index"
+   class="element-item"
+   draggable="true"
+   @dragstart="onDragStart($event, element)"
+    >
+   {{ element.name }}
     </div>
   </div>
-</template>
-
-<script>
-export default {
-  name: "MakeSandBox",
-
-  props: {},
-  setup() {
-    return {};
-  },
-};
-</script>
-
-<style scoped>
-.page {
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-}
-.wrap {
-	width: 100%;
-	height: 100%;
-	background: linear-gradient(180deg, rgba(255,255,255,0.53) 0%,rgba(255,255,255,0) 89.72%);
-	border-radius: 35px;
-	border-width: 2px;
-	box-sizing: border-box;
-	backdrop-filter: blur(200px);
-	padding: 20px;
-}
-.container {
-	width: 100%;
-	height: calc(100% - 40px);
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	gap: 20px;
-}
-.content {
-	width: 60%;
-	height: 100%;
-	overflow: auto;
-	border-radius: 8px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-}
-.main {
-	width: 718px;
-	height: 582px;
-	position: relative;
-}
-.section1 {
-	width: 718px;
-	height: 582px;
-	border-radius: 10px;
-	border-color: rgba(255,255,255,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	background: rgba(255,255,255,0.64);
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-}
-.subSection {
-	width: 686px;
-	height: 22px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 16px;
-}
-.block {
-	width: 686px;
-	height: 22px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 16px;
-}
-.text {
-	opacity: 0.38;
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(0,0,0,1);
-	line-height: 22px;
-	font-weight: 500;
-}
-.section2 {
-	width: 646px;
-	box-sizing: border-box;
-	min-height: 22px;
-	position: absolute;
-	top: 533px;
-	left: 32px;
-}
-.main1 {
-	width: 718px;
-	height: 90px;
-	border-radius: 10px;
-	border-color: rgba(255,255,255,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	background: rgba(255,255,255,0.64);
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: flex-end;
-	gap: 8px;
-}
-.section3 {
-	width: 686px;
-	height: 60px;
-	margin-top: 14px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: flex-start;
-}
-.subSection2 {
-	width: 686px;
-	height: 22px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: flex-start;
-	gap: 16px;
-	margin: 0;
-	padding: 0;
-}
-.text6 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	color: rgba(0,0,0,1);
-	line-height: 22px;
-	font-weight: 500;
-}
-.subSection1 {
-	width: 504px;
-	height: 30px;
-	margin-left: 1px;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-}
-.block1 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border: 1px solid rgba(225,225,239,1);
-	background: white;
-	box-sizing: border-box;
-	padding: 0 16px;
-	cursor: pointer;
-}
-.block1:hover {
-	background: #f5f5f5;
-}
-.block2 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border: 1px solid rgba(225,225,239,1);
-	background: white;
-	box-sizing: border-box;
-	padding: 0 16px;
-	cursor: pointer;
-	margin-left: 16px;
-}
-.block2:hover {
-	background: #f5f5f5;
-}
-.block3 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border: 1px solid rgba(225,225,239,1);
-	background: white;
-	box-sizing: border-box;
-	padding: 0 16px;
-	cursor: pointer;
-	margin-left: 16px;
-}
-.block3:hover {
-	background: #f5f5f5;
-}
-.block4 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border: 1px solid rgba(225,225,239,1);
-	background: white;
-	box-sizing: border-box;
-	padding: 0 16px;
-	cursor: pointer;
-	margin-left: 16px;
-}
-.block4:hover {
-	background: #f5f5f5;
-}
-.block5 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border: 1px solid rgba(225,225,239,1);
-	background: white;
-	box-sizing: border-box;
-	padding: 0 16px;
-	cursor: pointer;
-	margin-left: 16px;
-}
-.block5:hover {
-	background: #f5f5f5;
-}
-.text1, .text2, .text3, .text4, .text5 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	color: rgba(8,8,7,0.6);
-	line-height: 30px;
-	font-weight: 400;
-	text-align: left;
-	padding: 0;
-	margin: 0;
-}
-.content1 {
-	width: 453px;
-	height: 785px;
-	position: relative;
-}
-.main2 {
-	position: absolute;
-	top: 15px;
-	left: 0px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 416px;
-	height: 705px;
-}
-.subSection3 {
-	width: 416px;
-	height: 705px;
-	background-color: rgba(255,255,255,0.64);
-	border-radius: 10px;
-	border-color: rgba(255,255,255,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	background: rgba(255,255,255,0.64);
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-}
-.text16 {
-	margin-top: 24px;
-	margin-left: 24px;
-	font-family: 'PingFang SC';
-	font-size: 16px;
-	white-space: nowrap;
-	color: rgba(8,8,7,1);
-	line-height: 16px;
-	font-weight: 500;
-}
-.block6 {
-	margin-top: 24px;
-	margin-left: 24px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: flex-start;
-	width: 368px;
-	height: 72px;
-}
-.subBlock {
-	width: 368px;
-	height: 30px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 12px;
-}
-.div {
-	width: 368px;
-	height: 30px;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-}
-.div1 {
-	position: relative;
-	width: 60px;
-	height: 30px;
-}
-.div2 {
-	width: 60px;
-	opacity: 0.7;
-	border-radius: 6px;
-	border-color: rgba(64,108,240,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	min-height: 30px;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-}
-.text7 {
-	position: absolute;
-	top: 8px;
-	left: 16px;
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: justify;
-	color: rgba(64,108,240,1);
-	line-height: 14px;
-	font-weight: 500;
-}
-.div3 {
-	margin-left: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 80px;
-	height: 30px;
-}
-.div4 {
-	width: 80px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-}
-.text8 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.div5 {
-	margin-left: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 60px;
-	height: 30px;
-}
-.div6 {
-	width: 60px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.text9 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.div7 {
-	margin-left: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 60px;
-	height: 30px;
-}
-.div8 {
-	width: 60px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.text10 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.div9 {
-	margin-left: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 60px;
-	height: 30px;
-}
-.div10 {
-	width: 60px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.text11 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.subBlock1 {
-	width: 320px;
-	height: 30px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 8px;
-}
-.div11 {
-	width: 320px;
-	height: 30px;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-}
-.div12 {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 88px;
-	height: 30px;
-}
-.div13 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.text12 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.div14 {
-	margin-left: 8px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 60px;
-	height: 30px;
-}
-.div15 {
-	width: 60px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-}
-.text13 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.div16 {
-	margin-left: 8px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 60px;
-	height: 30px;
-}
-.div17 {
-	width: 60px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-}
-.text14 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.div18 {
-	margin-left: 8px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 88px;
-	height: 30px;
-}
-.div19 {
-	width: 88px;
-	height: 30px;
-	border-radius: 6px;
-	border-color: rgba(225,225,239,1);
-	border-style: solid;
-	border-width: 1px;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.text15 {
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	text-align: center;
-	color: rgba(8,8,7,0.6);
-	line-height: 14px;
-	font-weight: 400;
-}
-.block7 {
-	width: 361px;
-	height: 266px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	gap: 19px;
-	margin-top: 39px;
-	margin-left: 27px;
-}
-.subBlock2 {
-	width: 361px;
-	height: 266px;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-}
-.image {
-	width: 361px;
-	height: 76px;
-	box-sizing: border-box;
-}
-.image1 {
-	width: 361px;
-	height: 76px;
-	box-sizing: border-box;
-	margin-top: 19px;
-}
-.image2 {
-	width: 361px;
-	height: 76px;
-	box-sizing: border-box;
-	margin-top: 19px;
-}
-.section6 {
-	margin-top: 806px;
-	margin-left: 30px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 388px;
-	height: 46px;
-}
-.text17 {
-	margin-left: 16px;
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	color: rgba(255,255,255,1);
-	line-height: 14px;
-	font-weight: 400;
-}
-.container1 {
-	position: absolute;
-	top: 36px;
-	left: 39px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: auto;
-	height: auto;
-	gap: 8px;
-}
-.content2 {
-	width: auto;
-	height: auto;
-}
-.image3 {
-	width: 32px;
-	height: 32px;
-}
-.text18 {
-	margin-left: 0;
-	font-size: 16px;
-}
-.tool-container, .canvas-container {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin: 8px 0;
-}
-.image3, .image4 {
-	width: 24px;
-	height: 24px;
-}
-.text18, .text19 {
-	font-family: 'PingFang SC';
-	font-size: 16px;
-	color: rgba(0,0,0,1);
-	line-height: 1.5;
-	font-weight: 500;
-}
-.text20 {
-	position: absolute;
-	top: 21px;
-	left: 16px;
-	font-family: 'PingFang SC';
-	font-size: 14px;
-	white-space: nowrap;
-	color: rgba(51,51,51,1);
-	line-height: 14px;
-	font-weight: 400;
-}
-</style>
+  
+  <!-- 中央白板区域 -->
+  <div 
+    class="whiteboard"
+    @dragover.prevent
+    @drop="onDrop"
+    @click="deselectAll"
+    ref="whiteboard"
+  >
+    <div 
+   v-for="element in elements" 
+   :key="element.id"
+   class="element"
+   :style="{
+     left: element.x + 'px',
+     top: element.y + 'px',
+     zIndex: element.zIndex
+   }"
+   @click.stop="selectElement(element)"
+   @mousedown="startDrag(element, $event)"
+    >
+   <div class="element-content">
+     {{ element.name }}
+   </div>
+   <div v-if="element === selectedElement" class="element-selection"></div>
+    </div>
+  </div>
+   </div>
+ </div>
+  </template>
+  <script>
+  import { reactive, ref, toRaw } from 'vue'
+  import { nanoid } from 'nanoid'
+  
+  export default {
+ name: 'SandboxApp',
+ setup() {
+   // 元素库 - 预定义的可用元素
+   const elementLibrary = reactive([
+  { type: 'rectangle', name: '矩形', width: 100, height: 60, color: '#3eaf7c' },
+  { type: 'circle', name: '圆形', width: 80, height: 80, color: '#e96900' },
+  { type: 'text', name: '文本', width: 120, height: 40, color: '#1890ff' },
+  { type: 'image', name: '图片', width: 100, height: 100, color: '#722ed1' },
+  { type: 'decision', name: '决策', width: 100, height: 60, color: '#fa541c' }
+   ])
+   
+   // 白板上的元素
+   const elements = reactive([])
+   
+   // 选中元素
+   const selectedElement = ref(null)
+   
+   // 操作历史
+   const history = reactive({
+  past: [],
+  future: [],
+  current: []
+   })
+   
+   return {
+  elementLibrary,
+  elements,
+  selectedElement,
+  history
+   }
+ },
+ mounted() {
+   this.saveHistory()
+ },
+ methods: {
+   // 拖拽开始处理
+   onDragStart(event, element) {
+  event.dataTransfer.setData('elementType', element.type)
+  event.dataTransfer.setData('offsetX', event.offsetX)
+  event.dataTransfer.setData('offsetY', event.offsetY)
+   },
+   
+   // 拖拽放置处理
+   onDrop(event) {
+  const type = event.dataTransfer.getData('elementType')
+  const offsetX = parseInt(event.dataTransfer.getData('offsetX'))
+  const offsetY = parseInt(event.dataTransfer.getData('offsetY'))
+  
+  const libraryElement = this.elementLibrary.find(el => el.type === type)
+  if (!libraryElement) return
+  
+  const rect = this.$refs.whiteboard.getBoundingClientRect()
+  const x = event.clientX - rect.left - offsetX
+  const y = event.clientY - rect.top - offsetY
+  
+  // 创建新元素
+  const newElement = {
+    ...libraryElement,
+    id: nanoid(),
+    x,
+    y,
+    zIndex: this.elements.length + 1
+  }
+  
+  this.elements.push(newElement)
+  this.saveHistory()
+  this.selectElement(newElement)
+   },
+   
+   // 开始拖拽移动
+   startDrag(element, event) {
+  this.selectElement(element)
+  
+  const startX = element.x
+  const startY = element.y
+  const mouseStartX = event.clientX
+  const mouseStartY = event.clientY
+  
+  const onMouseMove = (e) => {
+    const dx = e.clientX - mouseStartX
+    const dy = e.clientY - mouseStartY
+    element.x = startX + dx
+    element.y = startY + dy
+  }
+  
+  const onMouseUp = () => {
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+    this.saveHistory()
+  }
+  
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+   },
+   
+   // 选中元素
+   selectElement(element) {
+  this.selectedElement = element
+   },
+   
+   // 取消选中
+   deselectAll() {
+  this.selectedElement = null
+   },
+   
+   // 删除选中元素
+   deleteSelected() {
+  if (!this.selectedElement) return
+  
+  const index = this.elements.indexOf(this.selectedElement)
+  if (index !== -1) {
+    this.elements.splice(index, 1)
+    this.selectedElement = null
+    this.saveHistory()
+  }
+   },
+   
+   // 保存操作历史
+   saveHistory() {
+  this.history.past.push(JSON.parse(JSON.stringify(toRaw(this.elements))))
+  this.history.future = []
+   },
+   
+   // 撤销操作
+   undo() {
+  if (this.history.past.length <= 1) return
+  
+  this.history.future.push(this.history.past.pop())
+  this.elements.splice(0, this.elements.length, ...this.history.past[this.history.past.length - 1])
+   },
+   
+   // 重做操作
+   redo() {
+  if (this.history.future.length === 0) return
+  
+  const nextState = this.history.future.pop()
+  this.history.past.push(JSON.parse(JSON.stringify(nextState)))
+  this.elements.splice(0, this.elements.length, ...nextState)
+   },
+   
+   // 保存项目
+   saveProject() {
+  const projectData = JSON.stringify({
+    elements: toRaw(this.elements),
+    savedAt: new Date().toISOString()
+  })
+  
+  // 创建Blob对象并下载[9](@ref)
+  const blob = new Blob([projectData], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `sandbox-project-${new Date().getTime()}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+   },
+   
+   // 分析沙盘
+   analyzeSandbox() {
+  // 这里可以实现沙盘分析逻辑
+  console.log('沙盘分析:', this.elements)
+  alert(`沙盘当前有 ${this.elements.length} 个元素`)
+   },
+   
+   // 导出XML
+   exportXML() {
+  // 将元素数据转换为XML格式
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+  xml += '<sandbox version="1.0">\n'
+  
+  this.elements.forEach(element => {
+    xml += `  <element id="${element.id}" type="${element.type}">\n`
+    xml += `    <name>${element.name}</name>\n`
+    xml += `    <x>${element.x}</x>\n`
+    xml += `    <y>${element.y}</y>\n`
+    xml += `    <width>${element.width}</width>\n`
+    xml += `    <height>${element.height}</height>\n`
+    xml += `    <color>${element.color}</color>\n`
+    xml += `  </element>\n`
+  })
+  
+  xml += '</sandbox>'
+  
+  // 创建Blob对象并下载[9](@ref)
+  const blob = new Blob([xml], { type: 'application/xml' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `sandbox-${new Date().getTime()}.xml`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+   },
+   
+   // 导出PNG
+   async exportPNG() {
+  // 使用html-to-image库或类似方法将白板转换为图片
+  try {
+    // 这里假设使用html-to-image库
+    // 实际使用时需要先安装：npm install html-to-image
+    const { toPng } = await import('html-to-image')
+    
+    const dataUrl = await toPng(this.$refs.whiteboard, {
+   backgroundColor: '#ffffff',
+   filter: node => !node.classList || !node.classList.contains('element-selection')
+    })
+    
+    // 下载图片[9](@ref)
+    const a = document.createElement('a')
+    a.href = dataUrl
+    a.download = `sandbox-${new Date().getTime()}.png`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  } catch (error) {
+    console.error('导出PNG失败:', error)
+    alert('导出PNG时出错，请查看控制台获取详细信息')
+  }
+   }
+ }
+  }
+  </script>
+  <style scoped>
+  .sandbox-app {
+ height: 90vh;
+ display: flex;
+ flex-direction: column;
+ font-family: Arial, sans-serif;
+  }
+  
+  .control-bar {
+ padding: 10px;
+ background-color: #f5f5f5;
+ border-bottom: 1px solid #ddd;
+ display: flex;
+ gap: 10px;
+  }
+  
+  .control-bar button {
+ padding: 8px 12px;
+ background-color: #fff;
+ border: 1px solid #ddd;
+ border-radius: 4px;
+ cursor: pointer;
+  }
+  
+  .control-bar button:hover {
+ background-color: #f0f0f0;
+  }
+  
+  .main-content {
+ display: flex;
+ flex: 1;
+ overflow: hidden;
+  }
+  
+  .elements-panel {
+ width: 200px;
+ padding: 15px;
+ background-color: #f9f9f9;
+ border-right: 1px solid #ddd;
+ overflow-y: auto;
+  }
+  
+  .elements-panel h3 {
+ margin-top: 0;
+  }
+  
+  .element-item {
+ padding: 10px;
+ margin-bottom: 8px;
+ background-color: #fff;
+ border: 1px solid #ddd;
+ border-radius: 4px;
+ cursor: grab;
+ user-select: none;
+  }
+  
+  .element-item:hover {
+ background-color: #f0f0f0;
+  }
+  
+  .element-item:active {
+ cursor: grabbing;
+  }
+  
+  .whiteboard {
+ flex: 1;
+ background-color: #fff;
+ position: relative;
+ overflow: hidden;
+ cursor: default;
+  }
+  
+  .element {
+ position: absolute;
+ cursor: move;
+ user-select: none;
+  }
+  
+  .element-content {
+ width: 100%;
+ height: 100%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: 2px solid currentColor;
+ border-radius: 4px;
+ background-color: rgba(255, 255, 255, 0.9);
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .element-selection {
+ position: absolute;
+ top: -4px;
+ left: -4px;
+ right: -4px;
+ bottom: -4px;
+ border: 2px dashed #1890ff;
+ pointer-events: none;
+  }
+  </style>
