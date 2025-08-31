@@ -9,7 +9,10 @@
           alt="用户头像"
         />
         <div class="profile-info">
-          <h3 class="username">渴望改变的小土豆</h3>
+          <div class="profile-front">	
+			<h3 class="username">渴望改变的小土豆</h3>
+			<span class="detail-text">编辑资料> | 查看详情> </span>
+          </div>
           <p class="signature">让每颗心灵都能被温柔托举</p>
           <div class="profile-footer">
             <div class="social-info">
@@ -209,6 +212,14 @@ export default {
   color: #666;
 }
 
+.profile-front {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end | flex-start;
+  width: 100%;
+  margin-top: 12px;
+}
+
 .profile-footer {
   display: flex;
   justify-content: space-between;
@@ -226,7 +237,7 @@ export default {
 
 .profile-details {
   display: flex;
-  gap: 16px;
+  gap: 12px;
 }
 
 .detail-item {
@@ -277,21 +288,21 @@ export default {
 
 .tab-buttons {
   display: flex;
-  gap: 10px;
+  gap: 0px;
 }
 
 .tab-button {
-  padding: 8px 16px;
+  padding: 4px 8px;
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   background: #f0f0f0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
 
 .tab-button.active {
-  background: rgba(99, 203, 255, 0.24);
+  background: rgba(99, 203, 255, 0.168);
   color: rgba(0, 0, 0, 1);
 }
 

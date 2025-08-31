@@ -263,20 +263,20 @@
   try {
     // 这里假设使用html-to-image库
     // 实际使用时需要先安装：npm install html-to-image
-    const { toPng } = await import('html-to-image')
+  //   const { toPng } = await import('html-to-image')
     
-    const dataUrl = await toPng(this.$refs.whiteboard, {
-   backgroundColor: '#ffffff',
-   filter: node => !node.classList || !node.classList.contains('element-selection')
-    })
+  //   const dataUrl = await toPng(this.$refs.whiteboard, {
+  //  backgroundColor: '#ffffff',
+  //  filter: node => !node.classList || !node.classList.contains('element-selection')
+  //   })
     
     // 下载图片[9](@ref)
-    const a = document.createElement('a')
-    a.href = dataUrl
-    a.download = `sandbox-${new Date().getTime()}.png`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+    // const a = document.createElement('a')
+    // a.href = dataUrl
+    // a.download = `sandbox-${new Date().getTime()}.png`
+    // document.body.appendChild(a)
+    // a.click()
+    // document.body.removeChild(a)
   } catch (error) {
     console.error('导出PNG失败:', error)
     alert('导出PNG时出错，请查看控制台获取详细信息')

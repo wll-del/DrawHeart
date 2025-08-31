@@ -5,6 +5,7 @@ import MakeSandBox from '@/views/MakeSandBox.vue'
 import Lovi from '@/views/Lovi.vue'
 import Community from '@/views/Community.vue'
 import Personal from '@/views/Personal.vue'
+import PostOne from '@/views/community/PostOne.vue'
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -33,6 +34,12 @@ const router = createRouter({
           path: 'personal',
           name: 'Personal',
           component: Personal
+        },
+        {
+          path: 'postone',
+          name: 'PostOne',
+          component: PostOne,
+          mata:{isDialog:true} //标记为弹窗路由
         }
       ]
     },
