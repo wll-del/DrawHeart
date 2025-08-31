@@ -185,12 +185,12 @@
   
   <style scoped>
   .page {
-  width: 100%;
+  width: 90%;
   min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
   position: relative;
-  background-color: #f5f5f5;
+  /* background-color: transparent; */
   }
   
   /* 1.1 标题区域 */

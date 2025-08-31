@@ -4,7 +4,7 @@
     <div class="profile-section">
       <div class="profile-header">
         <img 
-          :src="require('@/assets/tree1.png')" 
+          :src="require('@/assets/my_profile_big.png')" 
           class="avatar" 
           alt="用户头像"
         />
@@ -25,7 +25,7 @@
             <div class="profile-details">
               <div class="detail-item">
                 <img 
-                  :src="require('@/assets/tree1.png')" 
+                  :src="require('@/assets/email_icon.png')" 
                   class="icon" 
                   alt="邮箱图标"
                 />
@@ -33,7 +33,7 @@
               </div>
               <div class="detail-item">
                 <img 
-                  :src="require('@/assets/Image4.png')" 
+                  :src="require('@/assets/calendar_icon.png')" 
                   class="icon" 
                   alt="日期图标"
                 />
@@ -101,12 +101,12 @@ export default {
     fetchWorks() {
       // 模拟获取我的作品数据
       this.works = [
-        { id: 1, title: '作品1', thumbnail: require('@/assets/b1.png'), date: '2023-01-15' },
-        { id: 2, title: '作品2', thumbnail: require('@/assets/b2.png'), date: '2023-02-20' },
-        { id: 3, title: '作品3', thumbnail: require('@/assets/Image10.png'), date: '2023-03-10' },
-        { id: 4, title: '作品4', thumbnail: require('@/assets/Image11.png'), date: '2023-04-05' },
-        { id: 5, title: '作品5', thumbnail: require('@/assets/Image14.png'), date: '2023-05-12' },
-        { id: 6, title: '作品6', thumbnail: require('@/assets/Image15.png'), date: '2023-06-18' }
+        { id: 1, title: '作品1', thumbnail: require('@/assets/work/work1.jpg'), date: '2023-01-15' },
+        { id: 2, title: '作品2', thumbnail: require('@/assets/work/work2.jpg'), date: '2023-02-20' },
+        { id: 3, title: '作品3', thumbnail: require('@/assets/work/work3.jpg'), date: '2023-03-10' },
+        { id: 4, title: '作品4', thumbnail: require('@/assets/work/work4.jpg'), date: '2023-04-05' },
+        { id: 5, title: '作品5', thumbnail: require('@/assets/work/work5.jpg'), date: '2023-05-12' },
+        { id: 6, title: '作品6', thumbnail: require('@/assets/work/work6.jpg'), date: '2023-06-18' }
       ];
     },
     fetchReports() {
