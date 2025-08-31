@@ -2,96 +2,120 @@
   <div class="page">
     <!-- 1.1 标题区域 -->
     <div class="header-section">
-    <h1 class="main-title">交流连接新意</h1>
-    <p class="sub-title">交流、创作、陪伴-你的专属数字世界</p>
+      <h1 class="main-title">交流连接新意</h1>
+      <p class="sub-title">交流、创作、陪伴-你的专属数字世界</p>
     </div>
   
     <!-- 1.2 搜索区域 -->
     <div class="search-section">
-    <div class="search-container">
-      <input 
-      v-model="searchText" 
-      class="search-input" 
-      placeholder="搜索小组或者帖子"
-      @keyup.enter="handleSearch"
-      >
-      <button class="search-button" @click="handleSearch">
-      <img src="@/assets/Image7.png" class="search-icon">
-      <span>一键搜索</span>
-      </button>
-    </div>
+      <div class="search-container">
+        <input 
+          v-model="searchText" 
+          class="search-input" 
+          placeholder="搜索帖子"
+          @keyup.enter="handleSearch"
+        >
+        <div class="search_bottom">
+          <div class="search_recommend">
+            今日推荐帖子：
+            <span>沙盘俱乐部</span>
+            <span> | </span>
+            <span>心理疗愈室</span>
+          </div>
+          <button class="search-button" @click="handleSearch">
+            <img src="@/assets/Image7.png" class="search-icon">
+            <span>一键搜索</span>
+          </button>
+        </div>
+        
+      </div>
     </div>
   
     <!-- 1.3 导航区域 -->
     <div class="nav-section">
-    <div class="nav-left">
-      <button 
-      class="nav-button" 
-      :class="{ active: activeNav === 'recommend' }"
-      @click="changeNav('recommend')"
-      >
-      每日推荐
-      </button>
-      <button 
-      class="nav-button" 
-      :class="{ active: activeNav === 'myPosts' }"
-      @click="changeNav('myPosts')"
-      >
-      我的帖子
-      <span class="badge">{{ postCount }}</span>
-      </button>
-    </div>
-    <div class="nav-right">
-      <button 
-      class="nav-button" 
-      :class="{ active: activeAction === 'publish' }"
-      @click="changeAction('publish')"
-      >
-      发布
-      </button>
-      <button 
-      class="nav-button" 
-      :class="{ active: activeAction === 'collect' }"
-      @click="changeAction('collect')"
-      >
-      收藏
-      </button>
-    </div>
+      <div class="nav-left">
+        <button 
+          class="nav-button" 
+          :class="{ active: activeNav === 'recommend' }"
+          @click="changeNav('recommend')"
+        >
+          每日推荐
+        </button>
+        <button 
+          class="nav-button" 
+          :class="{ active: activeNav === 'myPosts' }"
+          @click="changeNav('myPosts')"
+        >
+          我的帖子
+          <span class="badge">{{ postCount }}</span>
+        </button>
+      </div>
+      <div class="nav-right">
+        <button 
+          class="nav-button" 
+          :class="{ active: activeAction === 'publish' }"
+          @click="changeAction('publish')"
+        >
+          发布
+        </button>
+        <button 
+          class="nav-button" 
+          :class="{ active: activeAction === 'collect' }"
+          @click="changeAction('collect')"
+        >
+          收藏
+        </button>
+      </div>
     </div>
   
     <!-- 1.4 内容展示区域 -->
     <div class="content-section">
-    <div class="post-grid">
-      <div 
-      v-for="(post, index) in posts" 
-      :key="index" 
-      class="post-card"
-      >
-      <img :src="post.image" class="post-image" alt="帖子图片">
-      <div class="discussion-count">{{ post.discussionCount }}人正在讨论...</div>
-      <div class="post-title">{{ post.title }}</div>
+      <div class="post-grid">
+        <div 
+          v-for="(post, index) in posts" 
+          :key="index" 
+          class="post-card"
+        >
+          <img :src="post.image" class="post-image" alt="帖子图片">
+          <div class="discussion-count">{{ post.discussionCount }}人正在讨论...</div>
+          <div class="post-title">{{ post.title }}</div>
+        </div>
       </div>
     </div>
+    
+    <div class="pop" v-if="isaddpost | issearchpost | isshowdetail">
+      <PostOne
+        class="create_post"
+        v-if="isaddpost"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+      <ShowPost
+        class="searchpost"
+        v-if="issearchpost"
+      />
+      <ShowDialog
+        class="showpost"
+        v-if="isshowdetail"
+      />
     </div>
-  
-    <!-- 1.5 发帖按钮 -->
-    <button class="post-button" @click="navigateToPost">
-    <span>+</span>
-    </button>
-    <!-- 发帖弹窗 -->
-    <div v-if="showPostDialog" class="post-dialog-overlay" @click.self="closePostDialog">
-    <div class="post-dialog">
-      <!-- 使用router-view来显示/postone路由的内容 -->
-      <router-view v-if="$route.path === '/postone'"></router-view>
-      <button class="close-button" @click="closePostDialog">×</button>
-    </div>
-    </div>
+
+    <button v-if="!isDialogVisible" class="fixed-button" @click="addpost">发布</button>
   </div>
-  </template>
+</template>
   
   <script>
+import PostOne from './community/PostOne.vue'
+import ShowDialog from './community/ShowDialog.vue';
+import ShowPost from './community/ShowPost.vue';
+
   export default {
   name: "CommunityPage",
+  components:{
+    PostOne,
+    ShowPost,
+    ShowDialog
+  },
   data() {
     return {
     showPostDialog: false,
@@ -115,10 +139,23 @@
       discussionCount: 8,
       title: '创作分享会｜最新...'
       }
-    ]
+    ],
+    isaddpost: false,
+    isDialogVisible:false,
+    issearchpost:false,
+    isshowdetail:true,
     }
   },
   methods: {
+    handleCancel(){
+      this.isaddpost=false;
+    },
+    handleSubmit(){
+      this.isaddpost=false;
+    },
+    addpost(){
+      this.isaddpost=true;
+    },
     handleSearch() {
     // 调用搜索接口
     // this.$api.searchPosts(this.searchText).then(response => {
@@ -184,13 +221,59 @@
   </script>
   
   <style scoped>
+  /*弹窗 */ 
+  .create_post{
+    width: 80%;
+    height: 100%;
+    margin-left: 20vw; 
+  }
+  .searchpost{
+    width: 80%;
+    height: 100%;
+    margin-left: 20vw; 
+  }
+  .showpost{
+    width: 80%;
+    height: 100%;
+    margin-left: 20vw; 
+  }
+  .fixed-button {
+    position: fixed;  /* 使用 fixed 而不是 absolute，确保按钮始终固定于视口 */
+    right: 20px;      /* 右边距 */
+    bottom: 20px;     /* 下边距 */
+
+    width: 4vw;
+    height: 9vh;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;     /* 去除边框 */
+    border-radius: 20vh; /* 轻微圆角 */
+    cursor: pointer;  /* 鼠标悬停时的指针样式 */
+    z-index: 1000;    /* 确保按钮在最上层 */
+  }
+  .pop{
+  position: fixed; /* 改为 fixed 定位 */
+  top: 0;
+  left: 0;
+  z-index: 9999; /* 设置足够高的层级 */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  /* 1.0 页面整体布局 */
   .page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  position: relative;
-  background-color: #f5f5f5;
+    width: 95%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
   }
   
   /* 1.1 标题区域 */
@@ -216,33 +299,45 @@
   }
   
   .search-container {
-  max-width: 700px;
-  min-height: 110px;
-  margin: 0 auto;
-  border: 1px solid #ddd;
-  border-radius: 12px 12px 12px 12px;
-  background-color: white;
-  display: flex;
-  align-items: center;
+    max-width: 40vw;
+    min-height: 5vh;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 12px 12px 12px 12px;
+    background-color: white;
+    display: flex;
+    flex-direction:column;
   }
-  
+  .search_recommend{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
   .search-input {
-  flex: 1;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 4px 0 0 4px;
-  font-size: 16px;
+    /* flex: 1; */
+    padding: 12px 16px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+    margin-bottom: 1vh;
   }
-  
+  .search_bottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
   .search-button {
-  padding: 12px 16px;
-  background-color: #63cbff;
-  color: white;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  display: flex;
-  align-items: self-end;
+    width: 8vw;
+    margin-right:1vw;
+    margin-bottom: 1vh;
+    padding: 12px 16px;
+    background-color: #63cbff;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: self-end;
   }
   
   .search-icon {
@@ -253,16 +348,17 @@
   
   /* 1.3 导航区域 */
   .nav-section {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    gap: 2px;
   }
   
   .nav-left, .nav-right {
-  display: flex;
-  gap: 2px;
+
+    gap: 2px;
   }
   
   .nav-button {

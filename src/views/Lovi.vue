@@ -174,7 +174,7 @@ export default {
         }).toString();
 
 		const response =await chat(params)
-
+		console.log("返回 ", response)
         if (response.code) {
           console.log('消息发送成功');
           // 清空输入框
@@ -186,7 +186,7 @@ export default {
           this.activeText = '';
 
           this.messages.push({
-            content: response.data,
+            content: response["data"],
             isUser: false,
             timestamp: new Date().toISOString()
         });
