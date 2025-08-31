@@ -1,113 +1,86 @@
 <template>
-  <div class="page">
-    <div class="wrap">
-      <div class="container">
-        <div class="content">
-          <div class="main">
-            <div class="section">
-              <div class="subSection">
-                <div class="block">
-                  <div class="subBlock"><p class="text">我的沙盘</p></div>
-                </div>
-                <div class="block1">
-                  <div class="subBlock1">
-                    <div class="div">
-                      <p class="text1">我的作品</p>
-                      <div class="div1"><div class="div2"></div></div>
-                    </div>
-                    <div class="div3"><p class="text2">沙盘报告</p></div>
-                  </div>
-                </div>
-              </div>
+  <div class="personal-page">
+    <!-- 顶部个人信息栏 -->
+    <div class="profile-section">
+      <div class="profile-header">
+        <img 
+          :src="require('@/assets/tree1.png')" 
+          class="avatar" 
+          alt="用户头像"
+        />
+        <div class="profile-info">
+          <h3 class="username">渴望改变的小土豆</h3>
+          <p class="signature">让每颗心灵都能被温柔托举</p>
+          <div class="profile-footer">
+            <div class="social-info">
+              <span class="social-item">2粉丝</span>
+              <span class="social-divider">｜</span>
+              <span class="social-item">0关注</span>
+              <span class="social-divider">｜</span>
+              <span class="social-item">1作品</span>
             </div>
-            <div class="section1">
-              <div class="subSection1">
-                <div class="block2">
-                  <div class="subBlock2"></div>
-                  <div class="subBlock3">
-                    <p class="text3">渴望改变自的小土豆</p>
-                    <div class="div4">
-                      <p class="text4">
-                        <span class="text4__seg0">2022-12-30&nbsp;13:12</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            <div class="profile-details">
+              <div class="detail-item">
+                <img 
+                  :src="require('@/assets/tree1.png')" 
+                  class="icon" 
+                  alt="邮箱图标"
+                />
+                <span class="detail-text">guest@example.com</span>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="content1">
-          <div class="main1">
-            <div class="section2">
-              <div class="subSection2">
-                <div class="block3"><div class="subBlock4"></div></div>
-                <div class="block4">
-                  <div class="subBlock5">
-                    <div class="div5">
-                      <div class="div6">
-                        <p class="text5">编辑资料</p>
-                        <img
-                          :src="require('@/assets/tree1.png')"
-                          class="image"
-                          alt="Image Asset 1"
-                        />
-                      </div>
-                    </div>
-                    <div class="div7"></div>
-                    <div class="div8">
-                      <div class="div9">
-                        <p class="text6">查看详情</p>
-                        <img
-                          :src="require('@/assets/tree1.png')"
-                          class="image1"
-                          alt="Image Asset 2"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="detail-item">
+                <img 
+                  :src="require('@/assets/Image4.png')" 
+                  class="icon" 
+                  alt="日期图标"
+                />
+                <span class="detail-text">登岛日期: 2022-12-30</span>
               </div>
-            </div>
-            <div class="section3">
-              <div class="subSection3">
-                <div class="block5">
-                  <div class="subBlock6">
-                    <img
-                      :src="require('@/assets/tree1.png')"
-                      class="image2"
-                      alt="Image Asset 3"
-                    />
-                    <p class="text7">guest@example.com</p>
-                  </div>
-                </div>
-                <div class="block6"></div>
-                <div class="block7">
-                  <div class="subBlock7">
-                    <img
-                      :src="require('@/assets/Image4.png')"
-                      class="image3"
-                      alt="Image Asset 4"
-                    />
-                    <p class="text8">登岛日期&nbsp;2025/8/24</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="content2">
-          <div></div>
-          <div class="main3">
-            <div class="section4">
-              <p class="text9">俄在印度银行数十亿卢比无法使用</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="container1">
-        <div class="content3"></div>
-        <p class="text10">中国向俄、法赠送月球样品</p>
+    </div>
+
+    <!-- 底部我的沙盘区域 -->
+    <div class="sandbox-section">
+      <div class="sandbox-header">
+        <h3 class="section-title">我的沙盘</h3>
+        <div class="tab-buttons">
+          <button 
+            :class="['tab-button', { active: activeTab === 'works' }]" 
+            @click="activeTab = 'works'"
+          >
+            我的作品
+          </button>
+          <button 
+            :class="['tab-button', { active: activeTab === 'reports' }]" 
+            @click="activeTab = 'reports'"
+          >
+            沙盘报告
+          </button>
+        </div>
+      </div>
+
+      <div class="sandbox-content">
+        <div v-if="activeTab === 'works'" class="works-grid">
+          <div class="work-item" v-for="work in works" :key="work.id" @click="viewWorkDetail(work)">
+            <img :src="work.thumbnail" class="work-thumbnail" :alt="work.title" />
+            <div class="work-info">
+              <h4 class="work-title">{{ work.title }}</h4>
+              <span class="work-date">{{ work.date }}</span>
+            </div>
+          </div>
+        </div>
+        <div v-if="activeTab === 'reports'" class="reports-list">
+          <div class="report-item" v-for="report in reports" :key="report.id" @click="viewReportDetail(report)">
+            <div class="report-header">
+              <h4 class="report-title">{{ report.title }}</h4>
+              <span class="report-date">{{ report.date }}</span>
+            </div>
+            <p class="report-content">{{ report.content }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -115,14 +88,315 @@
 
 <script>
 export default {
-  name: "GeneratedComponent",
-
-  props: {},
-  setup() {
-    return {};
+  name: "PersonalPage",
+  data() {
+    return {
+      activeTab: 'works' // 默认激活"我的作品"选项卡
+    };
   },
+  methods: {
+    fetchWorks() {
+      // 模拟获取我的作品数据
+      this.works = [
+        { id: 1, title: '作品1', thumbnail: require('@/assets/b1.png'), date: '2023-01-15' },
+        { id: 2, title: '作品2', thumbnail: require('@/assets/b2.png'), date: '2023-02-20' },
+        { id: 3, title: '作品3', thumbnail: require('@/assets/Image10.png'), date: '2023-03-10' },
+        { id: 4, title: '作品4', thumbnail: require('@/assets/Image11.png'), date: '2023-04-05' },
+        { id: 5, title: '作品5', thumbnail: require('@/assets/Image14.png'), date: '2023-05-12' },
+        { id: 6, title: '作品6', thumbnail: require('@/assets/Image15.png'), date: '2023-06-18' }
+      ];
+    },
+    fetchReports() {
+      // 模拟获取沙盘报告数据
+      this.reports = [
+        { id: 1, title: '沙盘分析报告1', date: '2023-01-10', content: '这是第一个沙盘的分析报告摘要...' },
+        { id: 2, title: '沙盘分析报告2', date: '2023-02-15', content: '这是第二个沙盘的分析报告摘要...' },
+        { id: 3, title: '沙盘分析报告3', date: '2023-03-22', content: '这是第三个沙盘的分析报告摘要...' }
+      ];
+    },
+    viewReportDetail(report) {
+      // 查看报告详情
+      console.log('Viewing report:', report);
+      // 这里可以添加打开报告详情的逻辑
+    },
+    viewWorkDetail(work) {
+      // 查看作品详情
+      console.log('Viewing work:', work);
+      // 这里可以添加打开作品放大图的逻辑
+      alert(`正在查看作品: ${work.title}`);
+    }
+  },
+  created() {
+    this.fetchWorks(); // 默认加载我的作品数据
+  },
+  watch: {
+    activeTab(newVal) {
+      if (newVal === 'works') {
+        this.fetchWorks();
+      } else {
+        this.fetchReports();
+      }
+    }
+  }
 };
 </script>
+
+<style scoped>
+.personal-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-section {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  position: relative;
+}
+
+.profile-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.action-link {
+  cursor: pointer;
+}
+
+.action-divider {
+  color: #ccc;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.username {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.signature {
+  margin: 6px 0 6px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.profile-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.social-info {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.profile-details {
+  display: flex;
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #999;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.detail-text {
+  font-size: 12px;
+  color: #999;
+}
+
+.social-divider {
+  color: #ccc;
+}
+
+.sandbox-section {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sandbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.tab-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+}
+
+.tab-button.active {
+  background: rgba(99, 203, 255, 0.24);
+  color: rgba(0, 0, 0, 1);
+}
+
+.sandbox-content {
+  flex: 1;
+  border: 1px dashed #eee;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+.work-item {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.work-item:hover {
+  transform: translateY(-5px);
+}
+
+.work-thumbnail {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.work-info {
+  padding: 12px;
+  background: white;
+}
+
+.work-title {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.work-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.reports-list {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.report-item {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.report-item:hover {
+  transform: translateY(-2px);
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.report-title {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.report-date {
+  font-size: 13px;
+  color: #999;
+}
+
+.report-content {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
 
 <style scoped>
 .page {
@@ -621,37 +895,6 @@ export default {
 	color: rgba(38,6,4,0.4);
 	line-height: 13px;
 	font-weight: 400;
-}
-.content2 {
-	position: absolute;
-	top: 19px;
-	left: 839px;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-	width: 353px;
-	height: 785px;
-}
-.main3 {
-	margin-top: 806px;
-	margin-left: 30px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 388px;
-	height: 46px;
-}
-.section4 {
-	width: 388px;
-	height: 46px;
-	background-color: rgba(255,255,255,1);
-	border-radius: 8px;
-	box-sizing: border-box;
-	background: rgba(255,255,255,1);
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
 }
 .text9 {
 	margin-left: 16px;
