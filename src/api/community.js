@@ -9,6 +9,7 @@ export async function create_post(data) {
             data
         });
         console.log("res",response);
+        return response
     } catch (error) {
         console.error("Login failed:", error);
         throw error;
@@ -54,7 +55,7 @@ export async function get_my_post_list() {
     }
 }
 
-export async function get_favorite_post_list(params) {
+export async function get_favorite_post_list() {
     try{
         const response = await request({
             method: 'get',

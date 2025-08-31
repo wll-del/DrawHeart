@@ -6,6 +6,8 @@ import Lovi from '@/views/Lovi.vue'
 import Community from '@/views/Community.vue'
 import Personal from '@/views/Personal.vue'
 import PostOne from '@/views/community/PostOne.vue'
+import ShowPost from '@/views/community/ShowPost.vue'
+import ShowDialog from '@/views/community/ShowDialog.vue'
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -29,6 +31,16 @@ const router = createRouter({
           path: 'community',
           name: 'Community',
           component: Community
+        },
+        {
+          path: 'showpost',
+          name: 'ShowPost',
+          component: ShowPost
+        },
+        {
+            path: 'showdialog',
+            name: 'ShowDialog',
+            component: ShowDialog
         },
         {
           path: 'personal',

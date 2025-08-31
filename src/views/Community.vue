@@ -267,13 +267,12 @@ import ShowPost from './community/ShowPost.vue';
 
   /* 1.0 页面整体布局 */
   .page {
-    width: 95%;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #f5f5f5;
-    display: flex;
-    flex-direction: column;
+  width: 90%;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  /* background-color: transparent; */
   }
   
   /* 1.1 标题区域 */

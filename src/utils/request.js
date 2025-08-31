@@ -19,7 +19,7 @@ export function request(config) {
     instance.interceptors.request.use(
         (config) => {
             // const token = tokenStore.getToken();
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdW4iLCJleHAiOjE3NTY2MDU0NTd9.J5szmALdhnJ1BGosazamGL30h_ogJSUuFlDx78WYgFU";
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdW4iLCJleHAiOjE3NTY2MzExMzZ9.POtRRNnYgpOGvktJsZOC_lz3DKHWW8l3jXGhKv5N8uQ";
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
             }

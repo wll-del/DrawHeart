@@ -1,4 +1,5 @@
 <template>
+  <div class="back">
     <div class="post-page">
       <div class="post-header">
         <h2 class="welcome-title">欢迎来到画心岛小组</h2>
@@ -8,7 +9,13 @@
       <div class="post-content">
         <div class="title-section">
           <div class="title-input">
-            <p class="input-placeholder">请输入帖子标题</p>
+            <!-- <p class="input-placeholder">请输入帖子标题</p> -->
+            <input 
+              v-model="title" 
+              class="input-placeholder" 
+              placeholder="请输入帖子标题"
+              @keyup.enter="handleSearch"
+            >
             <p class="char-counter">0/25</p>
           </div>
         </div>
@@ -16,31 +23,74 @@
         <div class="content-section">
           <div class="content-input">
             <div class="divider"></div>
-            <p class="content-placeholder">点击输入正文</p>
+            <!-- <p class="content-placeholder">点击输入正文</p> -->
+            <textarea 
+              v-model="content" 
+              class="content-placeholder" 
+              placeholder="点击输入正文"
+              @keyup.enter="handleSearch"
+            >
+            </textarea>
           </div>
         </div>
   
         <div class="post-footer">
-          <p class="word-count">字数0&nbsp;已保存</p>
-          <button class="preview-btn">预览</button>
-          <button class="schedule-btn">定时发布</button>
-          <button class="publish-btn">发布</button>
+          <p class="word-count">字数:{{postcnt}}</p>
+          <!-- <button class="preview-btn">预览</button> -->
+          <!-- <button class="schedule-btn">定时发布</button> -->
+          <button class="publish-btn" @click="handleSubmit">发布</button>
         </div>
       </div>
     </div>
+    <div @click="handleCancel">x</div>
+  </div>
   </template>
   
   <script>
+  import {create_post} from '@/api/community.js'
   export default {
     name: "PostOneComponent",
     props: {},
-    setup() {
-      return {};
+    data(){
+      return{
+        title:"",
+        content:"",
+      }
     },
+    computed:{
+      postcnt(){
+        return this.content.length
+      }
+    },
+    methods:{
+      handleCancel() {
+        alert("close")
+        this.$emit('cancel')
+      },
+      async handleSubmit(){
+        const data={
+          "title": this.title,
+          "content": this.content,
+          "first_photo_id":"xxxx",
+          "photos_id": "xxxx"
+        }
+        const res = await create_post(data)
+        alert(res["message"]) ;
+        this.$emit('submit')
+      }
+    }
+    
   };
   </script>
   
   <style scoped>
+  .back{
+    height: 100vh;
+    background: white;
+    display: flex;
+    flex-direction: row;
+    padding:1vw 1vh;
+  }
   .post-page {
     width: 100%;
     height: 100%;
@@ -95,6 +145,7 @@
     color: rgba(146,150,166,1);
     line-height: 40px;
     font-weight: 400;
+    border: none;
   }
   
   .char-counter {
@@ -128,6 +179,8 @@
     color: rgba(146,150,166,1);
     line-height: 16px;
     font-weight: 400;
+    border: none;
+    height:100%;
   }
   
   .post-footer {
