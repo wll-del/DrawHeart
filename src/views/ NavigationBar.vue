@@ -290,22 +290,22 @@
   }
   
   .vip-image-wrapper {
+    width: 50vw;
+    height: 60vh;
     position: relative;
     display: inline-block;
   }
   
   .vip-image {
-    width: 80%;
-    height: auto;
-    max-width: 100%;
-    max-height: 90vh;
+    width: 100%;
+    height: 100%;
     display: block;
   }
   
   .vip-close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 10vh;
+    right: 1vw;
     background: none;
     border: none;
     font-size: 24px;

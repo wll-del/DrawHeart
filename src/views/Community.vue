@@ -2,33 +2,27 @@
   <div class="page">
     <!-- 1.1 标题区域 -->
     <div class="header-section">
-      <h1 class="main-title">交流连接新意</h1>
+      <h2 class="main-title">交流连接心意</h2>
       <p class="sub-title">交流、创作、陪伴-你的专属数字世界</p>
     </div>
   
     <!-- 1.2 搜索区域 -->
-    <div class="search-section">
-      <div class="search-container">
+    <div class="input-area">
         <input 
           v-model="searchText" 
-          class="search-input" 
+          class="input-field" 
           placeholder="搜索帖子"
           @keyup.enter="handleSearch"
         >
         <div class="search_bottom">
           <div class="search_recommend">
             今日推荐帖子：
-            <span>沙盘俱乐部</span>
-            <span> | </span>
-            <span>心理疗愈室</span>
+            <span>沙盘俱乐部 |  心理疗愈室</span>
           </div>
           <button class="search-button" @click="handleSearch">
-            <img src="@/assets/Image7.png" class="search-icon">
-            <span>一键搜索</span>
+            <img src="@/assets/search_icon.png" class="search-icon">
           </button>
         </div>
-        
-      </div>
     </div>
   
     <!-- 1.3 导航区域 -->
@@ -93,14 +87,17 @@
       <ShowPost
         class="searchpost"
         v-if="issearchpost"
-      />
+        @cancel="handleCancel"/>
       <ShowDialog
         class="showpost"
         v-if="isshowdetail"
-      />
+		@cancel="handleCancel"/>
+	/>
     </div>
 
-    <button v-if="!isDialogVisible" class="fixed-button" @click="addpost">发布</button>
+    <button v-if="!isDialogVisible" class="fixed-button" @click="addpost">
+		<img :src="require('@/assets/add_icon.png')" class="fixed-icon" alt="发送">
+	</button>
   </div>
 </template>
   
@@ -125,17 +122,17 @@ import ShowPost from './community/ShowPost.vue';
     postCount: 5,
     posts: [
       {
-      image: require('@/assets/Image7.png'),
+      image: require('@/assets/work/work5.jpg'),
       discussionCount: 20,
       title: '沙盘俱乐部｜改变你...'
       },
       {
-      image: require('@/assets/Image7.png'),
+      image: require('@/assets/work/work2.jpg'),
       discussionCount: 15,
       title: '心理疗愈室｜放松...'
       },
       {
-      image: require('@/assets/Image7.png'),
+      image: require('@/assets/work/work4.jpg'),
       discussionCount: 8,
       title: '创作分享会｜最新...'
       }
@@ -149,6 +146,8 @@ import ShowPost from './community/ShowPost.vue';
   methods: {
     handleCancel(){
       this.isaddpost=false;
+      this.issearchpost=false;
+      this.isshowdetail=false;
     },
     handleSubmit(){
       this.isaddpost=false;
@@ -238,20 +237,21 @@ import ShowPost from './community/ShowPost.vue';
     margin-left: 20vw; 
   }
   .fixed-button {
-    position: fixed;  /* 使用 fixed 而不是 absolute，确保按钮始终固定于视口 */
-    right: 20px;      /* 右边距 */
-    bottom: 20px;     /* 下边距 */
-
-    width: 4vw;
-    height: 9vh;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: none;     /* 去除边框 */
-    border-radius: 20vh; /* 轻微圆角 */
-    cursor: pointer;  /* 鼠标悬停时的指针样式 */
-    z-index: 1000;    /* 确保按钮在最上层 */
+    position: absolute; /* 绝对定位 */
+  right: 0px; /* 距离右侧边距 */
+  bottom: 10vh; /* 距离底部边距 */
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
   }
+
+  /* 发送图标（保持原有尺寸） */
+  .fixed-icon {
+  width: 40%;
+  height: 40%;
+  }
+
   .pop{
   position: fixed; /* 改为 fixed 定位 */
   top: 0;
@@ -293,56 +293,69 @@ import ShowPost from './community/ShowPost.vue';
   }
   
   /* 1.2 搜索区域 */
-  .search-section {
-  margin-bottom: 30px;
-  }
-  
-  .search-container {
-    max-width: 40vw;
-    min-height: 5vh;
-    margin: 0 auto;
-    border: 1px solid #ddd;
-    border-radius: 12px 12px 12px 12px;
-    background-color: white;
-    display: flex;
-    flex-direction:column;
-  }
-  .search_recommend{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .search-input {
-    /* flex: 1; */
-    padding: 12px 16px;
-    border: none;
-    border-radius: 4px 0 0 4px;
-    font-size: 16px;
-    margin-bottom: 1vh;
-  }
+
+/* 输入区域 - 高度不超过总高20% */
+.input-area {
+  align-items: center;
+  justify-content: center;
+  position: relative; /* 作为发送按钮的定位容器 */
+  padding: 10px 20px;
+  box-sizing: border-box;
+  max-height: 15%; /* 核心限制：不超过总高度20% */
+}
+
+/* 输入框（保持原有样式） */
+.input-field {
+  width: 100%;
+  height: 15vh;
+  padding: 11px 40px 11px 11px; /* 右侧留出发送按钮空间 */
+  border-radius: 8px;
+  font-family: 'PingFang SC';
+  font-size: 14px;
+  background: 
+    linear-gradient(white, white) padding-box,
+    linear-gradient(to right, #00B2FF 0%, #4D6EF2 50%, #BF9FFF 100%) border-box;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+}
+
+.input-field::placeholder {
+  color: rgba(191,196,217,1);
+}
+   
   .search_bottom{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
   }
-  .search-button {
-    width: 8vw;
-    margin-right:1vw;
-    margin-bottom: 1vh;
-    padding: 12px 16px;
-    background-color: #63cbff;
-    color: white;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
+
+  .search_recommend{
+	position: absolute; /* 绝对定位 */
+    left: 32px; /* 距离右侧边距 */
+    bottom: 25px; /* 距离底部边距 */
     display: flex;
-    align-items: self-end;
+    flex-direction: row;
+    justify-content: space-between;
+	font-family: 'PingFang SC';
+    font-size: 14px;
+	color: #333;
+  } 
+
+  /* 查找按钮 */
+  .search-button {
+    position: absolute; /* 绝对定位 */
+    right: -20px; /* 距离右侧边距 */
+    bottom: 20px; /* 距离底部边距 */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 4px;
   }
   
+  /* 查找icon */
   .search-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+  width: 50%;
+  height: 50%;
   }
   
   /* 1.3 导航区域 */
