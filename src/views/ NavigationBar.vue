@@ -89,7 +89,7 @@ import UserContoller from './UserContoller.vue';
     },
     data() {
       return {
-        isLogin: true, // 默认未登录状态
+        isLogin: false, // 默认未登录状态
         showDialog: false,  //会员弹窗
         nobackgroundVideo: require('@/assets/no-login-back.webm'), // 默认加载未登录状态的视频
         backgroundVideo: require('@/assets/login-back.webm') ,
