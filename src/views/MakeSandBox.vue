@@ -31,9 +31,10 @@
               @click.stop="selectElement(element)"
               @mousedown="startDrag(element, $event)"
             >
-              <div class="element-content">
+              <!-- <div class="element-content">
                 {{ element.name }}
-              </div>
+              </div> -->
+              <img :src=element.img alt="图片描述"  class="element-img"/>
               <div v-if="element === selectedElement" class="element-selection"></div>
             </div>
           </div>
@@ -78,7 +79,7 @@
               draggable="true"
               @dragstart="onDragStart($event, element)"
             >
-              <img src=element.img alt="图片描述" />
+              <img :src=element.img alt="图片描述"  class="element-img"/>
             </div>
           </div>
         </div>
@@ -92,7 +93,7 @@
 import { reactive, toRaw } from 'vue'
 import { nanoid } from 'nanoid'
 // import SandBoxRes from './sandbox/SandBoxRes.vue'
-
+import {save_work, analyse_sand} from "@/api/sandbox"
 export default {
   name: 'SandboxApp',
   data(){
@@ -126,93 +127,92 @@ export default {
       elements_content: [],
       type_path : {
         "地形": [
-          "@/assets/terrain/1.png",
-          "@/assets/terrain/2.png",
-          "@/assets/terrain/3.png",
-          "@/assets/terrain/4.png",
-          "@/assets/terrain/5.png",
-          "@/assets/terrain/6.png"
+          require("@/assets/terrain/1.png"),
+          require("@/assets/terrain/2.png"),
+          require("@/assets/terrain/3.png"),
+          require("@/assets/terrain/4.png"),
+          require("@/assets/terrain/5.png"),
+          require("@/assets/terrain/6.png")
         ],
         "植物": [
-          "@/assets/plant/1.png",
-          "@/assets/plant/2.png",
-          "@/assets/plant/3.png",
-          "@/assets/plant/4.png",
-          "@/assets/plant/5.png",
-          "@/assets/plant/6.png",
-          "@/assets/plant/7.png",
-          "@/assets/plant/8.png",
-          "@/assets/plant/9.png",
-          "@/assets/plant/10.png",
-          "@/assets/plant/11.png"
+          require("@/assets/plant/1.png"),
+          require("@/assets/plant/2.png"),
+          require("@/assets/plant/3.png"),
+          require("@/assets/plant/4.png"),
+          require("@/assets/plant/5.png"),
+          require("@/assets/plant/6.png"),
+          require("@/assets/plant/7.png"),
+          require("@/assets/plant/8.png"),
+          require("@/assets/plant/9.png"),
+          require("@/assets/plant/10.png")
         ],
         "自然景观": [
-          "@/assets/natural_landscape/1.png",
-          "@/assets/natural_landscape/2.png",
-          "@/assets/natural_landscape/3.png",
-          "@/assets/natural_landscape/4.png",
-          "@/assets/natural_landscape/5.png",
-          "@/assets/natural_landscape/6.png",
-          "@/assets/natural_landscape/7.png",
-          "@/assets/natural_landscape/8.png",
-          "@/assets/natural_landscape/9.png",
-          "@/assets/natural_landscape/10.png",
-          "@/assets/natural_landscape/11.png"
+          require("@/assets/natural_landscape/1.png"),
+          require("@/assets/natural_landscape/2.png"),
+          require("@/assets/natural_landscape/3.png"),
+          require("@/assets/natural_landscape/4.png"),
+          require("@/assets/natural_landscape/5.png"),
+          require("@/assets/natural_landscape/6.png"),
+          require("@/assets/natural_landscape/7.png"),
+          require("@/assets/natural_landscape/8.png"),
+          require("@/assets/natural_landscape/9.png"),
+          require("@/assets/natural_landscape/10.png"),
+          require("@/assets/natural_landscape/11.png")
         ],
         "人物":[
-          "@/assets/people/1.png",
-          "@/assets/people/2.png",
-          "@/assets/people/3.png",
-          "@/assets/people/4.png",
-          "@/assets/people/5.png",
-          "@/assets/people/6.png",
-          "@/assets/people/7.png",
-          "@/assets/people/8.png",
-          "@/assets/people/9.png",
-          "@/assets/people/10.png",
-          "@/assets/people/11.png",
-          "@/assets/people/12.png"
+          require("@/assets/people/1.png"),
+          require("@/assets/people/2.png"),
+          require("@/assets/people/3.png"),
+          require("@/assets/people/4.png"),
+          require("@/assets/people/5.png"),
+          require("@/assets/people/6.png"),
+          require("@/assets/people/7.png"),
+          require("@/assets/people/8.png"),
+          require("@/assets/people/9.png"),
+          require("@/assets/people/10.png"),
+          require("@/assets/people/11.png"),
+          require("@/assets/people/12.png")
         ],
         "交通":[
-          "@/assets/transportation/1.png",
-          "@/assets/transportation/2.png",
-          "@/assets/transportation/3.png",
-          "@/assets/transportation/4.png",
-          "@/assets/transportation/5.png",
-          "@/assets/transportation/6.png",
-          "@/assets/transportation/7.png",
-          "@/assets/transportation/8.png",
-          "@/assets/transportation/9.png",
-          "@/assets/transportation/10.png",
-          "@/assets/transportation/11.png",
-          "@/assets/transportation/12.png",
-          "@/assets/transportation/13.png",
-          "@/assets/transportation/14.png",
-          "@/assets/transportation/15.png",
-          "@/assets/transportation/16.png"
+          require("@/assets/transportation/1.png"),
+          require("@/assets/transportation/2.png"),
+          require("@/assets/transportation/3.png"),
+          require("@/assets/transportation/4.png"),
+          require("@/assets/transportation/5.png"),
+          require("@/assets/transportation/6.png"),
+          require("@/assets/transportation/7.png"),
+          require("@/assets/transportation/8.png"),
+          require("@/assets/transportation/9.png"),
+          require("@/assets/transportation/10.png"),
+          require("@/assets/transportation/11.png"),
+          require("@/assets/transportation/12.png"),
+          require("@/assets/transportation/13.png"),
+          require("@/assets/transportation/14.png"),
+          require("@/assets/transportation/15.png")
         ],
         "动物":[
-          "@/assets/animal/1.png",
-          "@/assets/animal/2.png",
-          "@/assets/animal/3.png",
-          "@/assets/animal/4.png",
-          "@/assets/animal/5.png",
-          "@/assets/animal/6.png",
-          "@/assets/animal/7.png"
+          require("@/assets/animal/1.png"),
+          require("@/assets/animal/2.png"),
+          require("@/assets/animal/3.png"),
+          require("@/assets/animal/4.png"),
+          require("@/assets/animal/5.png"),
+          require("@/assets/animal/6.png"),
+          require("@/assets/animal/7.png")
         ],
         "建筑物":[
-          "@/assets/building/1.png",
-          "@/assets/building/2.png",
-          "@/assets/building/3.png",
-          "@/assets/building/4.png",
-          "@/assets/building/5.png",
-          "@/assets/building/6.png",
-          "@/assets/building/6.png",
-          "@/assets/building/7.png",
-          "@/assets/building/8.png",
-          "@/assets/building/9.png",
-          "@/assets/building/10.png"
-        ]}
+          require("@/assets/building/1.png"),
+          require("@/assets/building/2.png"),
+          require("@/assets/building/3.png"),
+          require("@/assets/building/4.png"),
+          require("@/assets/building/5.png"),
+          require("@/assets/building/6.png"),
+          require("@/assets/building/6.png"),
+          require("@/assets/building/7.png"),
+          require("@/assets/building/8.png"),
+          require("@/assets/building/9.png"),
+          require("@/assets/building/10.png")
+        ]},
+        wid:""
     }
   },
   mounted() {
@@ -224,7 +224,7 @@ export default {
       const path_list = this.type_path[this.select_type]
       console.log(this.select_type)
       this.elements_content = []
-      for(let i=0;i<=path_list.length;i+=1)
+      for(let i=0;i<path_list.length;i+=1)
       {
         console.log(path_list[i])
         this.elements_content.push(
@@ -235,18 +235,19 @@ export default {
     
     // 拖拽开始处理
     onDragStart(event, element) {
-      event.dataTransfer.setData('elementType', element.type)
+      event.dataTransfer.setData('elementType', element.img)
       event.dataTransfer.setData('offsetX', event.offsetX)
       event.dataTransfer.setData('offsetY', event.offsetY)
     },
     
     // 拖拽放置处理
     onDrop(event) {
-      const type = event.dataTransfer.getData('elementType')
+      const img = event.dataTransfer.getData('elementType')
       const offsetX = parseInt(event.dataTransfer.getData('offsetX'))
       const offsetY = parseInt(event.dataTransfer.getData('offsetY'))
       
-      const libraryElement = this.elementLibrary.find(el => el.type === type)
+      // const libraryElement = this.elementLibrary.find(el => el.img === img)
+      const libraryElement = img
       if (!libraryElement) return
       
       const rect = this.$refs.whiteboard.getBoundingClientRect()
@@ -255,11 +256,12 @@ export default {
       
       // 创建新元素
       const newElement = {
-        ...libraryElement,
+        // ...libraryElement,
         id: nanoid(),
         x,
         y,
-        zIndex: this.elements.length + 1
+        zIndex: this.elements.length + 1,
+        "img":libraryElement
       }
       
       this.elements.push(newElement)
@@ -339,30 +341,59 @@ export default {
     },
     
     // 保存项目
-    saveProject() {
-      const projectData = JSON.stringify({
-        elements: toRaw(this.elements),
-        savedAt: new Date().toISOString()
-      })
-      
-      // 创建Blob对象并下载
-      const blob = new Blob([projectData], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `sandbox-project-${new Date().getTime()}.json`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+    async saveProject() {
+      try {
+        // 1. 生成并验证文件内容
+        const xmlBlob = this.exportXML();
+        if (!xmlBlob || xmlBlob.size === 0) {
+          throw new Error('XML内容为空或无效');
+        }
+
+        // PNG生成是异步操作，需要await
+        const pngBlob = await this.exportPNG(); 
+        if (!pngBlob || pngBlob.size === 0) {
+          throw new Error('PNG图片生成失败或为空');
+        }
+
+        // 2. 准备表单数据
+        const formData = new FormData();
+    
+        // 添加带文件名的文件字段
+        const timestamp = new Date().getTime();
+        formData.append('xml_file', xmlBlob, `sandbox-${timestamp}.xml`);
+        formData.append('png_file', pngBlob, `sandbox-${timestamp}.png`);
+        formData.append('wid', 'new');
+    
+        // 3. 添加调试输出（开发环境）
+        console.log('发送的FormData内容:');
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}:`, value instanceof Blob ? 
+          `${value.type} (${value.size} bytes)` : value
+          );
+        }
+
+        // 4. 发送请求并处理响应
+        const res = await save_work(formData);
+    
+        // 5. 处理成功响应
+        console.log('保存成功:', res.data);
+        this.wid = res.data;
+      } catch (error) {
+        // 7. 错误处理
+        console.error('保存项目失败:', error); 
+      }
     },
     
     // 分析沙盘
-    analyzeSandbox() {
-      // 这里可以实现沙盘分析逻辑
-      console.log('沙盘分析:', this.elements)
-      //alert(`沙盘当前有 ${this.elements.length} 个元素`)
-      // this.$router.push('/sandboxres')
+    async analyzeSandbox() {
+      console.log('沙盘分析')
+  
+      this.saveProject()
+      const params = new URLSearchParams({
+        wid: this.wid
+      }).toString();
+      const res = await analyse_sand(params);
+      console.log(res)
     },
     
     // 导出XML
@@ -373,7 +404,7 @@ export default {
       
       this.elements.forEach(element => {
         xml += `  <element id="${element.id}" type="${element.type}">\n`
-        xml += `    <name>${element.name}</name>\n`
+        xml += `    <name>${element.img}</name>\n`
         xml += `    <x>${element.x}</x>\n`
         xml += `    <y>${element.y}</y>\n`
         xml += `    <width>${element.width}</width>\n`
@@ -383,45 +414,35 @@ export default {
       })
       
       xml += '</sandbox>'
-      
-      // 创建Blob对象并下载
-      const blob = new Blob([xml], { type: 'application/xml' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `sandbox-${new Date().getTime()}.xml`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+      const xmlBlob = new Blob([xml], { type: 'application/xml' }); 
+      return xmlBlob
     },
     
     // 导出PNG
     async exportPNG() {
-      // 使用html-to-image库或类似方法将白板转换为图片
-      try {
-        // 这里假设使用html-to-image库
         // 实际使用时需要先安装：npm install html-to-image
-        // const { toPng } = await import('html-to-image')
+        const { toPng } = await import('html-to-image')
         
-        // const dataUrl = await toPng(this.$refs.whiteboard, {
-        //  backgroundColor: '#ffffff',
-        //  filter: node => !node.classList || !node.classList.contains('element-selection')
-        // })
+        const dataUrl = await toPng(this.$refs.whiteboard, {
+         backgroundColor: '#ffffff',
+         filter: node => !node.classList || !node.classList.contains('element-selection')
+        })
+        const response = await fetch(dataUrl);
+        const imageBlob = await response.blob();
+        return imageBlob
         
         // 下载图片
-        // const a = document.createElement('a')
-        // a.href = dataUrl
-        // a.download = `sandbox-${new Date().getTime()}.png`
-        // document.body.appendChild(a)
-        // a.click()
-        // document.body.removeChild(a)
-      } catch (error) {
-        console.error('导出PNG失败:', error)
-        alert('导出PNG时出错，请查看控制台获取详细信息')
-      }
+      //   const a = document.createElement('a')
+      //   a.href = dataUrl
+      //   a.download = `sandbox-${new Date().getTime()}.png`
+      //   document.body.appendChild(a)
+      //   a.click()
+      //   document.body.removeChild(a)
+      // } catch (error) {
+      //   console.error('导出PNG失败:', error)
+      //   alert('导出PNG时出错，请查看控制台获取详细信息')
+      // }
     }
-
   }
 }
 </script>
@@ -576,6 +597,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   gap:1vw;
+  height:100vh;
   overflow-y: auto; /* 元素过多时垂直滚动 */
 }
 .element-type-item{
@@ -583,22 +605,21 @@ export default {
   height: 2vh;
   border: gray;
 }
-
+.element-img {
+  width: 100%;
+  height:100%
+}
 /* 元素项 - 模仿.action-btn */
 .element-item {
+  weight: 15vw;
+  height: 4vh;
   padding: 10px;
   border: none;
   border-radius: 8px;
-  background: rgba(225, 238, 255, 1); /* 与.action-btn背景一致 */
-  font-family: 'PingFang SC';
-  font-size: 14px;
+  /* background: rgba(225, 238, 255, 1); 与.action-btn背景一致 */
   cursor: grab;
   transition: all 0.2s ease;
   box-sizing: border-box;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .element-item:hover {

@@ -1,15 +1,17 @@
 <template>
     <div class="back">
       <!-- 背景视频 -->
-      
-      
       <!-- 导航栏 -->
       <div v-if="!isLogin">
-        <video autoplay loop muted class="background-video">
+          <video autoplay muted class="background-video" v-if="isstart">
             <source :src="nobackgroundVideo" type="video/webm">
-        </video>
-        <img src="@/assets/huaxindao_font_w.png">
-        <!-- <div>1</div> -->
+          </video>
+          <img src="@/assets/huaxindao_font_w.png">
+          <UserContoller
+            v-if="!isstart"
+            @login="handlelogin"
+          />
+          <div @click="user_login" class="login"  v-if="isstart"></div>
       </div>
       <div v-else>
         <!-- 顶栏 -->
@@ -34,10 +36,10 @@
           <!-- 侧边栏 -->
           <div class="navbar">
             <!-- 沙盘 - 搭配"沙盘"主题图标 -->
-  <router-link to="/sandbox" class="navbar-item" active-class="navbar-item--active">
-    <img src="@/assets/sanbox_icon.png" class="icon" alt="头像图标">
-    <span class="navbar-text">沙盘作画</span>
-  </router-link>
+            <router-link to="/sandbox" class="navbar-item" active-class="navbar-item--active">
+              <img src="@/assets/sanbox_icon.png" class="icon" alt="头像图标">
+              <span class="navbar-text">沙盘作画</span>
+            </router-link>
   
   <!-- lovi - 搭配"机器人/聊天"主题图标 -->
   <router-link to="/lovi" class="navbar-item" active-class="navbar-item--active">
@@ -78,24 +80,27 @@
     </div>
   </template>
   
-  <script>
+<script>
+import UserContoller from './UserContoller.vue';
+
   export default {
+    components:{
+      UserContoller
+    },
     data() {
       return {
         isLogin: true, // 默认未登录状态
         showDialog: false,  //会员弹窗
         nobackgroundVideo: require('@/assets/no-login-back.webm'), // 默认加载未登录状态的视频
-        backgroundVideo: require('@/assets/login-back.webm') 
+        backgroundVideo: require('@/assets/login-back.webm') ,
+        isstart:true
       }
     },
-    watch: {
-      isLogin(newVal) {
-        // 监听登录状态变化，切换背景视频
-        this.backgroundVideo = newVal 
-          ? require('@/assets/login-back.webm') 
-          : require('@/assets/no-login-back.webm');
-      }
-    },
+  watch: {
+  },
+
+
+
     async mounted() {
       // 初始化检查登录状态
       this.checkLoginStatus();
@@ -105,6 +110,11 @@
       window.removeEventListener('beforeunload', this.handleLogoutOnClose);
     },
     methods: {
+      handlelogin(){
+        console.log("login msg")
+        this.isLogin = true;
+        this.$router.push('/lovi')
+      },
       async checkLoginStatus() {
         // 实际项目中这里应该调用API检查登录状态
         // const isLoggedIn = await this.$api.checkAuth();
@@ -121,12 +131,22 @@
       },
       handleLogoutOnClose() {
         // 关闭页面时的处理
+      },
+      user_login(){
+        this.isstart=false;
       }
     }
   }
   </script>
   
   <style scoped>
+  .login{
+    position: relative;
+    top:25vw;
+    left:35vw;
+    width: 20vw;
+    height: 10vh;
+  }
   .back {
     height: 100vh;
     width: 100vw;

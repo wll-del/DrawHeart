@@ -69,6 +69,7 @@
           v-for="(post, index) in posts" 
           :key="index" 
           class="post-card"
+          @click="select_post"
         >
           <img :src="post.image" class="post-image" alt="帖子图片">
           <div class="discussion-count">{{ post.discussionCount }}人正在讨论...</div>
@@ -140,10 +141,13 @@ import ShowPost from './community/ShowPost.vue';
     isaddpost: false,
     isDialogVisible:false,
     issearchpost:false,
-    isshowdetail:true,
+    isshowdetail:false,
     }
   },
   methods: {
+    select_post(){
+      this.isshowdetail=true;
+    },
     handleCancel(){
       this.isaddpost=false;
       this.issearchpost=false;
@@ -156,6 +160,7 @@ import ShowPost from './community/ShowPost.vue';
       this.isaddpost=true;
     },
     handleSearch() {
+      this.issearchpost=true;
     // 调用搜索接口
     // this.$api.searchPosts(this.searchText).then(response => {
     //   this.posts = response.data

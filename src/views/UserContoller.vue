@@ -72,8 +72,8 @@
         
             <p class="terms">注册即表示您同意我们的<a href="#">服务条款</a>和<a href="#">隐私政策</a></p>
           </div>
-        </div>
-        <div v-else>
+      </div>
+      <div v-else>
             <div class="form-container">
                 <div class="input-group">
                 <label>用户名</label>
@@ -95,14 +95,14 @@
         
                 <p class="terms"><a href="#">忘记密码</a></p>
             </div>
-        </div>
       </div>
-      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { login } from "@/api/user"
-// import { register  } from "@/api/user";
+import { register  } from "@/api/user";
 export default{
   data(){
     return{
@@ -134,11 +134,11 @@ export default{
         "Birthday": this.Birthday
       }
       console.log(data)
+      this.$router.push('/login')
+      const res = await register(data)
+      console.log(res.message)
       alert('注册成功');
-      this.router.push('/login')
-      // const res = await register(data)
-      // console.log(res.message)
-      // alert('注册成功');
+      this.$router.push('/login')
     },
     async user_login(){
       const form = new FormData();
@@ -147,20 +147,22 @@ export default{
       const res = await login(form)
       console.log(res.access_token)
       alert('登陆成功');
-      this.router.push('/sandbox')
+      this.$emit('login');
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
     }
-    
+    #app{
+      background-image: url("@/assets/b1.png");
+    }
     body {
       min-height: 100vh;
       display: flex;
@@ -173,6 +175,7 @@ export default{
     .container {
       width: 100%;
       max-width: 400px;
+      margin-left: 10vw;
     }
     
     .header {
