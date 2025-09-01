@@ -14,7 +14,7 @@
            <div class="input-group">
              <label>用户名</label>
              <div class="input-field">
-               <input type="text" v-model="username"  placeholder="请输入用户名">
+               <input type="text" v-model="username"  placeholder="请输入用户名"/>
              </div>
            </div>
              
@@ -132,7 +132,7 @@
        }
        const res = await register(data)
        console.log(res.message)
-       alert('注册成功');
+       //alert('注册成功');
        this.$router.push('/login')
      },
      async user_login(){
@@ -141,7 +141,7 @@
        form.append("password", this.password);
        const res = await login(form)
        console.log(res.access_token)
-       alert('登陆成功');
+       //alert('登陆成功');
        this.$emit('login');
      }
    }
@@ -164,15 +164,15 @@
        justify-content: center; /* 水平居中 */
        align-items: center; /* 垂直居中 */
        position: relative; /* 让背景图和容器有定位基准 */
-       padding: 20px; /* 避免容器贴边 */
+       padding: 0px; /* 避免容器贴边 */
        margin: 0;
        padding: 0;
      }
  
      /* 背景图：全屏覆盖，层级在最底层 */
      .back-jpg {
-       width: 100%;
-       height: 100%;
+       width: 100vw;
+       height: 100vh;
        object-fit: cover; /* 保持比例覆盖全屏 */
        position: absolute;
        top: 0;

@@ -6,7 +6,9 @@
           <video autoplay muted class="background-video" v-if="isstart">
             <source :src="nobackgroundVideo" type="video/webm">
           </video>
+          <div v-if="isstart">
           <img src="@/assets/huaxindao_font_w.png">
+          </div>
           <UserContoller
             v-if="!isstart"
             @login="handlelogin"
@@ -146,8 +148,8 @@ import UserContoller from './UserContoller.vue';
   <style scoped>
   .login{
     position: relative;
-    top:25vw;
-    left:35vw;
+    top:30vw;
+    left:36vw;
     width: 20vw;
     height: 10vh;
   }

@@ -10,10 +10,10 @@ import { RouterView } from 'vue-router'
 
 <style>
 #app {
-  margin-top: 1vh;
+  /* margin-top: 1vh;
   margin-bottom: 1vh;
   margin-left: 1vw;
-  margin-right: 1vw;
+  margin-right: 1vw; */
   height: 100vh;
   overflow: hidden;
 }

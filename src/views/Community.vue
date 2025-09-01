@@ -8,12 +8,12 @@
   
     <!-- 1.2 搜索区域 -->
     <div class="input-area">
-        <input 
+        <textarea 
           v-model="searchText" 
           class="input-field" 
           placeholder="搜索帖子"
           @keyup.enter="handleSearch"
-        >
+        />
         <div class="search_bottom">
           <div class="search_recommend">
             今日推荐帖子：
@@ -123,9 +123,9 @@ import ShowPost from './community/ShowPost.vue';
     postCount: 5,
     posts: [
       {
-      image: require('@/assets/work/work5.jpg'),
+      image: require('@/assets/img4.png'),
       discussionCount: 20,
-      title: '沙盘俱乐部｜改变你...'
+      title: '职场有你｜拆解...'
       },
       {
       image: require('@/assets/work/work2.jpg'),
@@ -154,7 +154,7 @@ import ShowPost from './community/ShowPost.vue';
       this.isshowdetail=false;
     },
     handleSubmit(){
-      this.isaddpost=false;
+      this.isaddpost=false; 
     },
     addpost(){
       this.isaddpost=true;

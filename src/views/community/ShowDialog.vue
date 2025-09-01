@@ -6,13 +6,13 @@
       <div class="club-header">
         <!-- 俱乐部图标 -->
         <div class="club-icon">
-          <img :src="require('@/assets/work/work3.jpg')" class="work-jpg" alt="收藏" />
+          <img :src="require('@/assets/img4.png')" class="work-jpg" alt="收藏" />
         </div>
         <!-- 俱乐部信息 -->
         <div class="club-info">
-          <h2 class="club-name">沙盘创作俱乐部</h2>
+          <h2 class="club-name">职场有你</h2>
           <div class="front-header">
-            <p class="club-desc">改善你的心理世界，做一个快乐的岛民</p>
+            <p class="club-desc">拆解半程职场困惑，把弯路走成经验路</p>
             <div class="club-meta">
             <button class="collect-btn">
               <img :src="require('@/assets/showdialog/favorite_after.png')" alt="收藏" />
@@ -34,10 +34,11 @@
       <div class="club-content">
         <!-- 俱乐部介绍文本 -->
         <p class="club-intro">
-          你是否曾有过这样的时刻：脑子里藏着奇奇怪怪的念头，想把“云朵落在海底”“星星长在树上”的画面变出来，却不知从何下手？或是心里攒了细碎的情绪，说不出口，却想找个地方悄悄安放?
-          现在，有一个地方能帮你实现 ——沙盘创作俱乐部，这里没有 “画得好不好”“做得对不对” 的评判，只有一捧细沙、各式小摆件，和一群愿意陪你 “造梦” 的同路人。<br><br>
-          在这里，你可以把脑海里的故事铺进沙盘：用小石子堆成蜿蜒的山脉，用蓝色玻璃珠模拟粼粼的湖面，再摆上 tiny 的小人和小动物，让 “森林里的秘密聚会”“未来城市的模样”从想象落到现实。不必担心自己没有艺术基础，沙盘的魔力就在于：每一粒沙子的摆放，每一个摆件的选择，都是独属于你的表达 —— 你笔下没画完的场景，能在这里补全；你心里没说透的感受，沙子会替你 “说话”<br><br>
-          我们会定期组织主题创作活动：有时是 “童年记忆里的老地方”，大家一起用沙盘还原外婆家的小院、小学门口的小卖部，在摆放中重温温暖；有时是 “未完成的梦想”，有人造了 “开在沙漠里的书店”，有人拼了 “带着画板去旅行的房车”，在分享中看见彼此眼里的光；也会有自由创作时间，你可以安安静静地和沙子相处，把一天的疲惫揉进沙堆，再捏出一个 “治愈小世界”。
+          <span>  今天整理电脑文件夹，突然发现入职满半年的纪念 —— 和刚入职时相比，我不再怕 “问同事打印机怎么用”，却开始为 “怎么把小事做进核心流程” 失眠：</span>
+          上个月第一次独立对接跨部门项目，以为按要求收集完数据就够了，结果漏了和运营部同步进度，导致活动物料晚了 2 天；还有次帮老同事整理报告，花 3 小时把表格做得超精致，却被提醒 “重点是数据背后的用户反馈，不是格式”；最纠结的是上周，领导问 “你接下来想往哪个方向深耕”，我盯着屏幕半天说不出话 —— 这半年总在 “帮别人搭把手”，好像还没摸到自己的核心价值……
+后来对着沙盘发呆时，我摆了 “带箭头的路线图”（想理清方向），旁边放了 “搭着桥梁的小摆件”（对应跨部门协作），最后在路线图分叉口摆了个 “举着问号的小人”（就是纠结的自己）。Lovi 说我 “在‘执行’里攒够了经验，该试着往‘思考’走了”，突然想和大家聊聊：你们入职半年时，是不是也有 “怕做不好协作”“找不到核心方向” 的时刻？
+也想分享两个帮我跳出困境的小经验：一是做 “协作清单”，每次对接任务先写清 “需要哪些部门配合、关键时间节点、对方的核心需求”，上次用这个清单和运营部对接，居然提前 1 天完成了；二是每周五花 20 分钟写 “成长笔记”，记下来 “这周做了什么、哪步可以优化、下次想尝试什么”，慢慢就摸清了自己更擅长 “数据分析”，而不是 “纯执行整理”。
+如果你们也有半年期的职场小烦恼，或者有 “找核心方向”“搞跨部门协作” 的技巧，都来聊聊吧～职场不是短跑，半程的困惑，其实都是下次进步的信号呀～        
         </p>
 
         <!-- 讨论区标题 -->
@@ -62,7 +63,7 @@
       <!-- 3. 评论输入区（精简嵌套） -->
       <!-- 输入区域 - 高度不超过总高20% -->
       <div class="input-area">
-        <input 
+        <textarea 
         v-model="message" 
         class="input-field"
         :placeholder="showPlaceholder ? '发表你的看法' : ''"
@@ -91,23 +92,23 @@ export default {
         {
           avatar: require('@/assets/showdialog/user1.png'),
           name: "楚歌",
-          time: "2025-08-27 07:43:18",
+          time: "2025-08-30 07:43:18",
           location: "北京",
-          content: "工作久了总觉得心里堵得慌，想找人说又怕矫情，看到‘情绪悄悄安放’这句真的戳中我了。不用说话，用沙子摆一摆就能释放压力，还能认识同频的人，首次参与的定制小摆件也很吸引我，打算报名试试，希望能找回点平静。"
+          content: "刚工作总觉得很迷茫，想找人求助又怕麻烦别人，在这个社区里用组件摆一摆就能释放压力，还能认识同频的人，希望能找回点平静。"
         },
         {
           avatar: require('@/assets/showdialog/user2.png'),
           name: "快快",
-          time: "2025-08-29 16:31:48",
+          time: "2025-08-31 16:31:48",
           location: "广东",
           content: "太好了呜呜"
         },
         {
           avatar: require('@/assets/showdialog/user3.png'),
           name: "我超棒耶",
-          time: "2025-08-29 12:51:02",
+          time: "2025-09-01 00:51:02",
           location: "四川",
-          content: "刚入社会有点迷茫，看到有人用沙盘做‘带着画板去旅行的房车’，瞬间被戳到！这大概就是我心里藏着的梦想吧，想去现场看看大家的创作，也希望能在俱乐部找到方向"
+          content: "协作清单超实用！成长笔记马住了！"
         }
       ]
     };
@@ -115,6 +116,30 @@ export default {
   methods: {
     handlecancel() {
       this.$emit('cancel');
+    },
+    sendMessage() {
+      if (this.message) {
+        console.log("Sending message:", this.message);
+        const newmsg=[{
+          avatar: require('@/assets/my_profile_sm.png'),
+          name: "夏夏",
+          time: "2025-09-01 01:40:18",
+          location: "北京",
+          content: this.message
+        }]
+        for(let i=0;i<this.comments.length;i+=1)
+        {
+          newmsg.push(this.comments[i])
+        }
+        this.comments=newmsg
+        this.message = ""; // 清空输入框
+      }
+    },
+    clearPlaceholder() {
+      this.showPlaceholder = false;
+    },
+    restorePlaceholder() {
+      this.showPlaceholder = true;
     }
   }
 };
@@ -125,12 +150,13 @@ export default {
 .back {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 /* 主页面容器：固定核心样式，移除冗余属性 */
 .page {
   width: 100%;
+  height:100%;
   min-width: 470px;
   padding: 20px;
   box-sizing: border-box;
@@ -256,6 +282,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height:60%;
+  overflow: auto;
 }
 
 .club-intro {

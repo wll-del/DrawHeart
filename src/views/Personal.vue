@@ -37,7 +37,7 @@
                   class="icon" 
                   alt="日期图标"
                 />
-                <span class="detail-text">登岛日期: 2022-12-30</span>
+                <span class="detail-text">登岛日期: 2025-06-30</span>
               </div>
             </div>
           </div>
@@ -101,20 +101,20 @@ export default {
     fetchWorks() {
       // 模拟获取我的作品数据
       this.works = [
-        { id: 1, title: '作品1', thumbnail: require('@/assets/work/work1.jpg'), date: '2023-01-15' },
-        { id: 2, title: '作品2', thumbnail: require('@/assets/work/work2.jpg'), date: '2023-02-20' },
-        { id: 3, title: '作品3', thumbnail: require('@/assets/work/work3.jpg'), date: '2023-03-10' },
-        { id: 4, title: '作品4', thumbnail: require('@/assets/work/work4.jpg'), date: '2023-04-05' },
-        { id: 5, title: '作品5', thumbnail: require('@/assets/work/work5.jpg'), date: '2023-05-12' },
-        { id: 6, title: '作品6', thumbnail: require('@/assets/work/work6.jpg'), date: '2023-06-18' }
+        { id: 1, title: '作品1', thumbnail: require('@/assets/work/work1.jpg'), date: '2025-06-30' },
+        { id: 2, title: '作品2', thumbnail: require('@/assets/work/work2.jpg'), date: '2025-07-02' },
+        { id: 3, title: '作品3', thumbnail: require('@/assets/work/work3.jpg'), date: '2025-07-02' },
+        { id: 4, title: '作品4', thumbnail: require('@/assets/work/work4.jpg'), date: '2025-07-05' },
+        { id: 5, title: '作品5', thumbnail: require('@/assets/work/work5.jpg'), date: '2025-07-12' },
+        { id: 6, title: '作品6', thumbnail: require('@/assets/work/work6.jpg'), date: '2025-09-18' }
       ];
     },
     fetchReports() {
       // 模拟获取沙盘报告数据
       this.reports = [
-        { id: 1, title: '沙盘分析报告1', date: '2023-01-10', content: '这是第一个沙盘的分析报告摘要...' },
-        { id: 2, title: '沙盘分析报告2', date: '2023-02-15', content: '这是第二个沙盘的分析报告摘要...' },
-        { id: 3, title: '沙盘分析报告3', date: '2023-03-22', content: '这是第三个沙盘的分析报告摘要...' }
+        { id: 1, title: '沙盘分析报告1', date: '2025-06-30', content: '这幅沙盘画显示你在露营,友情总...' },
+        { id: 2, title: '沙盘分析报告2', date: '2025-07-02', content: '这幅沙盘画在茂盛的森林,大自然...' },
+        { id: 3, title: '沙盘分析报告3', date: '2025-07-02', content: '这幅沙盘画在温馨的小木屋里,你...' }
       ];
     },
     viewReportDetail(report) {

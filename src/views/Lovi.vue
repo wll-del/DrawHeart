@@ -20,7 +20,7 @@
         >
         <div class="avatar">
           <img 
-          :src="msg.isUser ? require('@/assets/my_profile_sm.png') : require('@/assets/profile_chat.png')" 
+          :src="msg.isUser ? require('@/assets/my_profile_sm.png') : require('@/assets/lovi_icon.png')" 
           alt="avatar"
           >
         </div>
@@ -38,7 +38,7 @@
       
       <!-- 输入区域 - 高度不超过总高20% -->
       <div class="input-area">
-        <input 
+        <textarea 
         v-model="message" 
         class="input-field"
         :placeholder="showPlaceholder ? '对Lovi说点什么...' : ''"
@@ -65,8 +65,8 @@
         <!-- Lovi GIF图 -->
         <img :src="require('@/assets/lovi.gif')" class="lovi-avatar" alt="Lovi">
         
-        <!-- 状态文本（对话框样式） -->
-        <p class="lovi-status">新的一天，lovi心情不错～</p>
+        <!-- 状态文本（对话框样式）
+        <p class="lovi-status">新的一天，lovi心情不错～</p> -->
       </div>
       
       <!-- 功能按钮组 -->
@@ -94,15 +94,15 @@
     activeText: '',
     messages: [
       {
-      content: '嗨！我是你的专属lovi，很高兴认识你',
+      content: '嗨，夏夏，晚上好～想和我聊聊天嘛',
       isUser: false,
       timestamp: new Date().toISOString()
       },
-      {
-      content: '今天开心吗',
-      isUser: false,
-      timestamp: new Date().toISOString()
-      }
+      // {
+      // content: '',
+      // isUser: false,
+      // timestamp: new Date().toISOString()
+      // }
     ]
     };
   },
@@ -118,8 +118,9 @@
     }
     },
   
-    async sendMessage(text = null) {
-    const messageContent = (text || this.message) + '';
+    async sendMessage() {
+      console.log(this.message)
+    const messageContent = this.message
     if (!messageContent.trim()) return;
   
     // 添加用户消息
@@ -128,6 +129,11 @@
       isUser: true,
       timestamp: new Date().toISOString()
     });
+    this.messages.push({
+      content: "回复中...",
+      isUser: false,
+      timestamp: new Date().toISOString()
+    }); 
   
     try {
       const params = new URLSearchParams({
@@ -137,21 +143,21 @@
   
       const response = await chat(params)
   
-      if (response.code) {
+      if (response) {
       this.message = '';
       this.$nextTick(() => {
         this.showPlaceholder = true;
       });
       this.activeText = '';
-  
+      this.messages.pop()
       // 添加Lovi回复
       this.messages.push({
-        content: response["data"],
+        content: response,
         isUser: false,
         timestamp: new Date().toISOString()
       });
       } else {
-      console.error('消息发送失败:', response.data.message);
+      // console.error('消息发送失败:', response.data.message);
       this.messages.push({
         content: '抱歉，消息发送失败，请重试',
         isUser: false,
@@ -344,6 +350,9 @@
     linear-gradient(to right, #00B2FF 0%, #4D6EF2 50%, #BF9FFF 100%) border-box;
   border: 2px solid transparent;
   box-sizing: border-box;
+   /* 确保文字从左上开始显示 */
+  vertical-align: top; /* 垂直方向从顶部开始 */
+  text-align: left; /* 水平方向从左侧开始（默认值，可省略） */
   }
   
   .input-field::placeholder {
@@ -414,8 +423,9 @@
   }
   
   .lovi-avatar {
-  width: 253px;
-  height: 220px;
+  margin-left: 40px;  
+  width: 300px;
+  height: 300px; 
   object-fit: contain;
   }
   
@@ -442,11 +452,11 @@
   }
   
   .lovi-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  width: 100%;
-  max-width: 372px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    /* max-width: 372px; */
   }
   
   .action-btn {

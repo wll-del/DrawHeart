@@ -29,7 +29,7 @@
         </div>
         
         <!-- 保存按钮 -->
-        <button class="save-btn" @click="handlecancel">保存至我的作品
+        <button class="save-btn" @click="handlecancel">去找lovi聊聊天～
             <!-- <img src="@/assets/save_to_work.png" class="save-icon"> -->
         </button>
 

@@ -138,6 +138,7 @@
   }
   
   .title-section {
+    border: none;
     margin-bottom: 20px;
   }
   
@@ -145,12 +146,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: none;
   }
   
   .input-placeholder {
     font-family: 'PingFang SC';
     font-size: 26px;
-    color: rgba(146,150,166,1);
+    color: #333;
     line-height: 40px;
     font-weight: 400;
     border: none;
@@ -169,6 +171,7 @@
   }
   
   .content-input {
+    margin-top: -5px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -183,8 +186,8 @@
   
   .content-placeholder {
     font-family: 'PingFang SC';
-    font-size: 16px;
-    color: rgba(146,150,166,1);
+    font-size: 17px;
+    color: #333;
     line-height: 16px;
     font-weight: 400;
     border: none;
@@ -222,21 +225,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .preview-btn {
-    border: 1px solid rgba(213,214,217,1);
-    color: rgba(36,37,41,1);
-    background: white;
-    margin-left: 20px;
-  }
-  
-  .schedule-btn {
-    border: 1px solid rgba(213,214,217,1);
-    color: rgba(36,37,41,1);
-    background: white;
-    margin-left: 15px;
-  }
+  } 
   
   .publish-btn {
     background: linear-gradient(148deg, rgba(35,76,255,1) 0.84%,rgba(0,194,255,1) 202.43%);
