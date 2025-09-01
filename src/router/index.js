@@ -10,6 +10,7 @@ import ShowPost from '@/views/community/ShowPost.vue'
 import ShowDialog from '@/views/community/ShowDialog.vue'
 import UserContoller from '@/views/UserContoller.vue'
 
+
 const router = createRouter({
   history: createWebHistory('/'),
   routes: [

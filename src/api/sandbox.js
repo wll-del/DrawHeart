@@ -29,13 +29,16 @@ export async function get_work_list() {
     }
 }
 
-export async function analyse_sand(params) {
+export async function analyse_sand(data) {
     try{
         const response = await request({
-            method: 'get',
-            url: `/sandtable/analyse_sand?${params}`
+            method: 'post',
+            url: '/sandtable/analyse_sand',
+            data,
+            timeout:360000,
         });
         console.log("res",response);
+        return response;
     } catch (error) {
         console.error("Login failed:", error);
         throw error;

@@ -86,16 +86,27 @@
       </div>
     </div>
   </div>
+  <div class="pop" v-if="isload">
+  <SandBoxRes
+    v-if="isres"
+    @cancel="handleCancel"
+    :data="resdata"
+  />
+  </div>
   </div>
 </template>
 
 <script>
 import { reactive, toRaw } from 'vue'
 import { nanoid } from 'nanoid'
-// import SandBoxRes from './sandbox/SandBoxRes.vue'
+
 import {save_work, analyse_sand} from "@/api/sandbox"
+import SandBoxRes from './sandbox/SandBoxRes.vue'
 export default {
   name: 'SandboxApp',
+  components: {
+    SandBoxRes
+  },
   data(){
     return{
       element_type : [
@@ -212,7 +223,10 @@ export default {
           require("@/assets/building/9.png"),
           require("@/assets/building/10.png")
         ]},
-        wid:""
+        wid:"",
+        isres:false,
+        resdata:"",
+        isload:false,
     }
   },
   mounted() {
@@ -386,16 +400,27 @@ export default {
     
     // 分析沙盘
     async analyzeSandbox() {
+      this.isload=true;
       console.log('沙盘分析')
-  
-      this.saveProject()
-      const params = new URLSearchParams({
-        wid: this.wid
-      }).toString();
-      const res = await analyse_sand(params);
+      if(this.wid == "")  await this.saveProject()
+      console.log(this.wid)
+      const formData = new FormData();
+      formData.append('wid', this.wid);
+      console.log('发送的FormData内容:');
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}:`, value instanceof Blob ? 
+          `${value.type} (${value.size} bytes)` : value
+          );
+        }
+      const res = await analyse_sand(formData);
       console.log(res)
+      this.isres=true;
+      this.resdata=res.data;
     },
-    
+    handleCancel(){
+      this.isres=false;
+      this.isload=false;
+    },
     // 导出XML
     exportXML() {
       // 将元素数据转换为XML格式
@@ -448,6 +473,18 @@ export default {
 </script>
 
 <style scoped>
+.pop{
+  position: fixed; /* 改为 fixed 定位 */
+  top: 0;
+  left: 0;
+  z-index: 9999; /* 设置足够高的层级 */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* 基础布局 - 完全模仿.page */
 .sandbox-app {

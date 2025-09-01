@@ -29,7 +29,7 @@
         </div>
         
         <!-- 保存按钮 -->
-        <button class="save-btn">保存至我的作品
+        <button class="save-btn" @click="handlecancel">保存至我的作品
             <!-- <img src="@/assets/save_to_work.png" class="save-icon"> -->
         </button>
 
@@ -40,10 +40,13 @@
   <script>
   export default {
     name: "SandboxAnalysis",
-    props: {}, 
-    setup() {  // 移除未使用的 props 参数
-      return {};
+    props: {
+      data: {
+      type: String,
+      required: true,
+      default: '默认标题'
     },
+    }, 
     methods: {
         handlecancel() {
         this.$emit('cancel');
