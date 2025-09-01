@@ -19,15 +19,15 @@
             <video autoplay loop muted class="background-video">
               <source :src="backgroundVideo" type="video/webm">
             </video>
-          <div class="title"> <img src="@/assets/huaxindao_font_black.png" class="huaxin_img"> </div>
+          <div class="title"> <img src="@/assets/huaxindao_font_black.png" class="huaxin_img" > </div>
           <div class="user-controls">
             <div v-if="isLogin" class="userpoint" @click="showPointsDialog">
               <img src="@/assets/vip_icon.png" class="icon" alt="积分图标">
               <span>积分</span>
             </div>
-            <div v-if="isLogin" class="userphoto">
+            <div v-if="isLogin" class="userphoto" @click="handleimage">
               <img src="@/assets/my_profile_sm.png" class="icon" alt="头像图标">
-              <span>头像</span>
+         
             </div>
           </div>
         </div>
@@ -96,6 +96,7 @@ import UserContoller from './UserContoller.vue';
         isstart:true
       }
     },
+
   watch: {
   },
 
@@ -110,6 +111,9 @@ import UserContoller from './UserContoller.vue';
       window.removeEventListener('beforeunload', this.handleLogoutOnClose);
     },
     methods: {
+      handleimage(){
+        this.$router.push('/personal')
+      },
       handlelogin(){
         console.log("login msg")
         this.isLogin = true;
