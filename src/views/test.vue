@@ -449,10 +449,6 @@ export default {
 </script>
 
 <style scoped>
-.sandbox-icon-title,.elements-icon-title{
-  display: flex;
-  flex: row;
-}
 /* 新增缩放相关样式 */
 .element {
   position: absolute;
@@ -603,11 +599,6 @@ export default {
   overflow-x: auto;
   box-sizing: border-box;
 }
-
- .elements-icon,.sandbox-icon {
-  width: 24px;
-  height: 24px;
- }
 
 .control-panel button {
   padding: 8px 16px;

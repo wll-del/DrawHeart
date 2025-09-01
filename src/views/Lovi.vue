@@ -98,6 +98,21 @@
       isUser: false,
       timestamp: new Date().toISOString()
       },
+      {
+      content: '今天加班到凌晨，改了三版方案还是被领导说没抓住重点，感觉自己好没用啊。。',
+      isUser: true,
+      timestamp: new Date().toISOString()
+      },
+      {
+      content: '抱抱夏夏～我知道这种‘说不出的压抑’很难受 —— 不如试试旁边的沙盘？里面有树、小房子、小动物这些摆件，你随手摆摆，我们一起看看藏在心里的感受～',
+      isUser: false,
+      timestamp: new Date().toISOString()
+      },
+      {
+        content: '能感受到你的挫败。沙里的篝火，像在找温暖缓解压力？',
+        isUser: false,
+        timestamp: new Date().toISOString()
+      }
       // {
       // content: '',
       // isUser: false,
