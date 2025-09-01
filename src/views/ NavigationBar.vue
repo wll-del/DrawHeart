@@ -52,7 +52,7 @@
   <!-- 社区 - 搭配"社区/用户"主题图标 -->
   <router-link to="/community" class="navbar-item" active-class="navbar-item--active">
     <img src="@/assets/communi_icon.png" class="icon" alt="头像图标">
-    <span class="navbar-text">交流社区</span>
+    <span class="navbar-text" @click="card">交流社区</span>
   </router-link>
   
   <!-- 个人中心 - 搭配"个人/用户"主题图标 -->
@@ -79,6 +79,12 @@
           </div>
         </div>
       </div>
+      <div class="pop" v-if="iscard" @click="cancel">
+        <div >
+          <img src="@/assets/card.png" alt="头像图标">
+        </div>
+        <!-- <div @click="unlock" class="unlock"></div> -->
+      </div>
     </div>
   </template>
   
@@ -95,7 +101,8 @@ import UserContoller from './UserContoller.vue';
         showDialog: false,  //会员弹窗
         nobackgroundVideo: require('@/assets/no-login-back.webm'), // 默认加载未登录状态的视频
         backgroundVideo: require('@/assets/login-back.webm') ,
-        isstart:true
+        isstart:true,
+        iscard:false
       }
     },
 
@@ -113,6 +120,19 @@ import UserContoller from './UserContoller.vue';
       window.removeEventListener('beforeunload', this.handleLogoutOnClose);
     },
     methods: {
+      unlock(){
+        this.iscard=false;
+        this.showDialog=true;
+        this.iscard=false;
+        this.showDialog=true;
+      },
+      cancel(){
+        this.iscard=false;
+        this.showDialog=true;
+      },
+      card(){
+        this.iscard=true;
+      },
       handleimage(){
         this.$router.push('/personal')
       },
@@ -146,6 +166,34 @@ import UserContoller from './UserContoller.vue';
   </script>
   
   <style scoped>
+  .unlock{
+    position: relative;
+    background-color: #333;
+    width: 10vw;
+    top:5vw;
+    left:3vh;
+    height: 10vh;
+    z-index: 1000;
+  }
+  .pop{
+  position: fixed; /* 改为 fixed 定位 */
+  top: 0;
+  left: 0;
+  z-index: 9999; /* 设置足够高的层级 */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon{
+  width: 50vw;
+  height: 50vh;
+  left:5vw;
+  top:5vw;
+}
+
   .login{
     position: relative;
     top:30vw;

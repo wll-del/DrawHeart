@@ -41,12 +41,12 @@
           
           <!-- 操作面板（对应.quick-reply，原control-bar） -->
           <div class="control-panel">
-            <button @click="saveProject">保存作品</button>
-            <button @click="analyzeSandbox">分析沙盘</button>
             <button @click="undo">上一步</button>
             <button @click="redo">下一步</button>
             <button @click="deleteSelected">删除元素</button>
-            <button @click="exportXML">导出XML</button>
+            <button @click="saveProject">保存作品</button>
+            <button @click="analyzeSandbox">分析沙盘</button>
+            <!-- <button @click="exportXML">导出XML</button> -->
             <button @click="exportPNG">导出PNG</button>
           </div>
         </div>
@@ -115,8 +115,6 @@ export default {
         {name: '自然景观', type: 'rectangle', color: '#3eaf7c'},
         {name: '人物', type: 'rectangle', color: '#3eaf7c'},
         {name: '交通', type: 'rectangle', color: '#3eaf7c'},
-        {name: '社会科学', type: 'rectangle', color: '#3eaf7c'},
-        {name: '宗教', type: 'rectangle', color: '#3eaf7c'},
         {name: '动物', type: 'rectangle', color: '#3eaf7c'},
         {name: '建筑物', type: 'rectangle', color: '#3eaf7c'},
       ],
@@ -633,13 +631,14 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap:1vw;
+  /* gap:1vw; */
   height:100vh;
   overflow-y: auto; /* 元素过多时垂直滚动 */
 }
 .element-type-item{
-  weight: 10vw;
+  weight: 15vw;
   height: 2vh;
+  margin:0.5vw;
   border: gray;
 }
 .element-img {
@@ -648,15 +647,16 @@ export default {
 }
 /* 元素项 - 模仿.action-btn */
 .element-item {
-  weight: 15vw;
-  height: 4vh;
+  weight: 5vw;
+  height: 3vh;
   padding: 10px;
+  margin-top:1vh;
   border: none;
   border-radius: 8px;
   /* background: rgba(225, 238, 255, 1); 与.action-btn背景一致 */
-  cursor: grab;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
+  /* cursor: grab; */
+  /* transition: all 0.2s ease; */
+  /* box-sizing: border-box; */
 }
 
 .element-item:hover {
