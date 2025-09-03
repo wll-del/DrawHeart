@@ -24,7 +24,12 @@
           alt="avatar"
           >
         </div>
-        <div class="message-bubble">{{ msg.content }}</div>
+        <span v-if="msg.isTyping" class="typing-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </span>
+        <div v-else class="message-bubble">{{ msg.content }}</div>
         </div>
       </div>
       
@@ -98,21 +103,21 @@
       isUser: false,
       timestamp: new Date().toISOString()
       },
-      {
-      content: '今天加班到凌晨，改了三版方案还是被领导说没抓住重点，感觉自己好没用啊。。',
-      isUser: true,
-      timestamp: new Date().toISOString()
-      },
-      {
-      content: '抱抱夏夏～我知道这种‘说不出的压抑’很难受 —— 不如试试旁边的沙盘？里面有树、小房子、小动物这些摆件，你随手摆摆，我们一起看看藏在心里的感受～',
-      isUser: false,
-      timestamp: new Date().toISOString()
-      },
-      {
-        content: '能感受到你的挫败。沙里的篝火，像在找温暖缓解压力？',
-        isUser: false,
-        timestamp: new Date().toISOString()
-      }
+      // {
+      // content: '今天加班到凌晨，改了三版方案还是被领导说没抓住重点，感觉自己好没用啊。。',
+      // isUser: true,
+      // timestamp: new Date().toISOString()
+      // },
+      // {
+      // content: '抱抱夏夏～我知道这种‘说不出的压抑’很难受 —— 不如试试旁边的沙盘？里面有树、小房子、小动物这些摆件，你随手摆摆，我们一起看看藏在心里的感受～',
+      // isUser: false,
+      // timestamp: new Date().toISOString()
+      // },
+      // {
+      //   content: '能感受到你的挫败。沙里的篝火，像在找温暖缓解压力？',
+      //   isUser: false,
+      //   timestamp: new Date().toISOString()
+      // }
       // {
       // content: '',
       // isUser: false,
@@ -135,73 +140,147 @@
   
     async sendMessage() {
       console.log(this.message)
-    const messageContent = this.message
-    if (!messageContent.trim()) return;
-  
-    // 添加用户消息
-    this.messages.push({
-      content: messageContent,
-      isUser: true,
-      timestamp: new Date().toISOString()
-    });
-    this.messages.push({
-      content: "回复中...",
-      isUser: false,
-      timestamp: new Date().toISOString()
-    }); 
-  
-    try {
-      const params = new URLSearchParams({
-      chat_content: messageContent,
-      chat_type: "text"
-      }).toString();
-  
-      const response = await chat(params)
-  
-      if (response) {
+      const messageContent = this.message
       this.message = '';
-      this.$nextTick(() => {
-        this.showPlaceholder = true;
-      });
-      this.activeText = '';
-      this.messages.pop()
-      // 添加Lovi回复
-      this.messages.push({
-        content: response,
-        isUser: false,
-        timestamp: new Date().toISOString()
-      });
-      } else {
-      // console.error('消息发送失败:', response.data.message);
-      this.messages.push({
-        content: '抱歉，消息发送失败，请重试',
-        isUser: false,
-        timestamp: new Date().toISOString()
-      });
-      }
-    } catch (error) {
-      console.error('发送消息出错:', error);
-      this.messages.push({
-      content: '网络异常，请检查网络后重试',
-      isUser: false,
-      timestamp: new Date().toISOString()
-      });
-    }
-    },
+      if (!messageContent.trim()) return;
   
+      // 添加用户消息
+      this.messages.push({
+        content: messageContent,
+        isUser: true,
+        timestamp: new Date().toISOString()
+      });
+      this.messages.push({
+        content: "",
+        isUser: false,
+        isTyping: true,
+        timestamp: new Date().toISOString()
+      }); 
+      this.currentAiMessageIndex = this.messages.length - 1;
+      try {
+        const params = new URLSearchParams({
+          chat_content: messageContent,
+          chat_type: "text"
+        }).toString();
+  
+        const response = await chat(params)
+  
+        if (!response.ok) {
+          throw new Error(`请求失败: ${response.status}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+        let aiResponse = '';
+        let isReading = true;
+        while (isReading) {
+          const { value, done } = await reader.read();
+          if (done) {
+            isReading = false;
+            break
+          }
+          
+          buffer += decoder.decode(value, { stream: true });
+          
+          // 处理SSE格式数据
+          let lastIndex = 0;
+          let isProcessing = true;
+          while (isProcessing) {
+            const eventEnd = buffer.indexOf('\n\n', lastIndex);
+            if (eventEnd === -1) 
+            {
+              isProcessing = false;
+              break;
+            }
+            const eventData = buffer.substring(lastIndex, eventEnd);
+            lastIndex = eventEnd + 2;
+            console.log("before")
+            if (eventData.startsWith('data: ')) {
+              const content = eventData.substring(6).trim();
+              console.log("after",content)
+              if (content === '[DONE]') {
+                // 流结束，移除打字动画
+                this.messages[this.currentAiMessageIndex].isTyping = false;
+                return;
+              }
+              
+              // 累积AI响应
+              aiResponse += content;
+              
+              // 更新AI消息内容
+              this.messages[this.currentAiMessageIndex].isTyping = false;
+              this.messages[this.currentAiMessageIndex].content = aiResponse;
+              
+              // 滚动到底部
+              this.$nextTick(() => {
+                const container = this.$el.querySelector('.chat-container');
+                container.scrollTop = container.scrollHeight;
+              });
+            }
+          }
+          
+          buffer = buffer.substring(lastIndex);
+        }
+      } catch (error) {
+        console.error('发送消息出错:', error);
+        
+        // 移除打字动画
+        this.messages[this.currentAiMessageIndex].isTyping = false;
+        
+        // 更新错误消息
+        this.messages[this.currentAiMessageIndex].content = 
+          `请求失败: ${error.message || '未知错误'}`;
+      }
+    },
+
+    //     if (response) {
+    //   this.message = '';
+    //   this.$nextTick(() => {
+    //     this.showPlaceholder = true;
+    //   });
+    //   this.activeText = '';
+    //   this.messages.pop()
+    //   // 添加Lovi回复
+    //   this.messages.push({
+    //     content: response.data,
+    //     isUser: false,
+    //     timestamp: new Date().toISOString()
+    //   });
+    //   } else {
+    //   // console.error('消息发送失败:', response.data.message);
+    //   this.messages.push({
+    //     content: '抱歉，消息发送失败，请重试',
+    //     isUser: false,
+    //     timestamp: new Date().toISOString()
+    //   });
+    //   }
+    // } catch (error) {
+    //   console.error('发送消息出错:', error);
+    //   this.messages.push({
+    //   content: '网络异常，请检查网络后重试',
+    //   isUser: false,
+    //   timestamp: new Date().toISOString()
+    //   });
+    // }
+    // },
+    formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+    },
     sendQuickMessage(text) {
-    this.activeText = text;
-    this.sendMessage(text);
+      this.activeText = text;
+      this.sendMessage(text);
     },
   
     getLoviResponse(userMessage) {
-    const responses = {
-      '你好': '你好呀！我是Lovi~',
-      '我爱你': '我也爱你哦！',
-      '你真可爱': '谢谢夸奖，你也很可爱呢！',
-      '今天开心吗？': '和你聊天很开心！'
-    };
-    return responses[userMessage] || '我收到你的消息了，真高兴和你聊天！';
+      const responses = {
+        '你好': '你好呀！我是Lovi~',
+        '我爱你': '我也爱你哦！',
+        '你真可爱': '谢谢夸奖，你也很可爱呢！',
+        '今天开心吗？': '和你聊天很开心！'
+      };
+      return responses[userMessage] || '我收到你的消息了，真高兴和你聊天！';
     },
   
     handleFeed() {
@@ -228,6 +307,19 @@
   </script>
   
   <style scoped>
+  .typing-indicator {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #888;
+  border-radius: 50%;
+  margin: 0 2px;
+  animation: bounce 1.5s infinite;
+}
   /* 基础布局 */
   .page {
   width: 95%;
