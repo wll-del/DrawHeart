@@ -74,7 +74,7 @@
           <div class="vip-dialog-container">
             <div class="vip-image-wrapper">
               <img src="@/assets/vip.png" class="vip-image">
-              <button class="vip-close-button" @click="closeDialog">×</button>
+              <button class="vip-close-button" @click="closeDialog"></button>
             </div>
           </div>
         </div>
@@ -379,7 +379,7 @@ import UserContoller from './UserContoller.vue';
   .vip-close-button {
     position: absolute;
     top: 10vh;
-    right: 1vw;
+    right: 2vw;
     background: none;
     border: none;
     font-size: 24px;
@@ -387,7 +387,7 @@ import UserContoller from './UserContoller.vue';
     cursor: pointer;
     padding: 5px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
+    /* background-color: rgba(0, 0, 0, 0.5); */
     width: 30px;
     height: 30px;
     display: flex;

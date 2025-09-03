@@ -94,7 +94,7 @@
     activeText: '',
     messages: [
       {
-      content: '嗨，夏夏，晚上好～想和我聊聊天嘛',
+      content: '嗨，夏夏，早上好～想和我聊聊天嘛',
       isUser: false,
       timestamp: new Date().toISOString()
       },
